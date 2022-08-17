@@ -1,9 +1,14 @@
 {
-  "name": "power-toc",
+  "type": "module",
+  "name": "toc-please",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
   "files": [
     "dist"
   ],
@@ -15,7 +20,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "module",
   "devDependencies": {
     "rollup": "^2.78.0",
     "rollup-plugin-terser": "^7.0.2"

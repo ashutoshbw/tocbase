@@ -1,21 +1,20 @@
 import { terser } from 'rollup-plugin-terser';
-import pkg from "./package.json";
-const input = ["src/index.js"];
+const input_CJS_ESM = ["src/index.js"];
+const inputUMD = ["src/index.umd.js"];
 
 export default [
   // UMD
   {
-    input,
+    input: inputUMD,
     watch: {
       include: './src/**',
       clearScreen: false
     },
     output: {
-      file: `./dist/umd/${pkg.name}.min.js`,
+      file: `./dist/cdn.min.js`,
       format: 'umd',
-      name: "powerToc",
+      name: "tocPlease",
       exports: "default",
-      esModule: false,
       plugins: [
         terser({
           ecma: 2020,
@@ -34,15 +33,15 @@ export default [
   },
   // CJS and ESM
   {
-    input,
+    input: input_CJS_ESM,
     output: [
       {
-        dir: 'dist/esm',
-        format: "esm",
+        file: `./dist/index.js`,
+        format: "es",
         exports: "named",
       },
       {
-        dir: "dist/cjs",
+        file: `./dist/index.cjs`,
         format: "cjs",
         exports: "named",
       },

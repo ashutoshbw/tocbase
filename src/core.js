@@ -1,39 +1,49 @@
 import { elt } from './util.js';
 
-export function powerTocCore(headings, settings = {}, firstTime = true, nums = []) {
-  const ul = elt("ul");
+export function tocPleaseCore(headings, config = {}, firstTime = true, nums = []) {
+  // just a optimized way to check if the array is empty
+  if (!headings[0]) return;
+
+  const ul = elt("ul", null, config.classes?.ul);
 
   nums.push(1);
 
   for (let i = 0; i < headings.length; i++) {
-    const getDepthNumSpan = className => settings.number ? `<span${className ? ` class="${className}"` : ''}>${nums.map(n => n.toLocaleString(settings.numberLocale ? settings.numberLocale : "en-US")).join(settings.hasOwnProperty("numberSeperator") ? settings.numberSeperator : '.')}</span>${settings.spaceAfterNum ? ' ' : ''}` : '';
+    const h = headings[i]; 
+    const hID = h.id || `a${nums.join("_")}`;
+    if (!h.id && config.modifyHeadings) h.id = hID;
+    const getDepthNumSpan = className => config.number ? `<span${className ? ` class="${className}"` : ''}>${nums.map(n => n.toLocaleString(config.numberLocale ? config.numberLocale : "en-US")).join(config.hasOwnProperty("numberSeperator") ? config.numberSeperator : '.')}</span>${config.spaceAfterNum ? ' ' : ''}` : '';
 
-    const li = elt("li");
-    li.innerHTML = `${getDepthNumSpan(settings.classes?.tocDepthNum)}<a href="#${headings[i].id}">${headings[i].innerHTML}</a>`;
+    const li = elt("li", null, config.classes?.li);
+    li.innerHTML = `${getDepthNumSpan(config.classes?.tocDepthNum)}<a href="#${hID}">${h.innerHTML}</a>`;
 
     // make the anchor
     let anchorHTML = '';
-    if (settings.anchor) {
+    if (config.anchor) {
       const anchor = elt("a");
-      anchor.href = "#" + headings[i].id;
-      anchor.setAttribute("aria-label", `Anchor link for: "${headings[i].id}"`);
+      anchor.href = "#" + hID;
+      anchor.setAttribute("aria-label", `Anchor link for: "${hID}"`);
 
-      if (settings.anchorText) anchor.textContent = settings.anchorText;
+      if (config.anchorText) anchor.textContent = config.anchorText;
 
-      let anchorClassName = settings.classes.anchor;
+      let anchorClassName = config.classes?.anchor;
       if (anchorClassName) anchor.className = anchorClassName;
 
       anchorHTML = anchor.outerHTML;
     }
 
-    // aL and aR variables anchor left and right
-    let sA = settings.spaceNearAnchor ? ' ' : '';
-    let aL = settings.anchorDir == "left" ? anchorHTML + sA : '';
-    let aR = settings.anchorDir == "right" ? sA + anchorHTML : '';
-    headings[i].innerHTML = aL + getDepthNumSpan(settings.classes?.hDepthNum) + headings[i].innerHTML + aR;
+    if (config.modifyHeadings) {
+      if (!config.anchorDir) config.anchorDir = "right";
+
+      // aL and aR variables anchor left and right
+      let sA = config.spaceNearAnchor ? ' ' : '';
+      let aL = config.anchorDir == "left" ? anchorHTML + sA : '';
+      let aR = config.anchorDir == "right" ? sA + anchorHTML : '';
+      h.innerHTML = aL + getDepthNumSpan(config.classes?.hDepthNum) + h.innerHTML + aR;
+    }
 
     /* ------ Sub heading generation start -------*/
-    const parentLevel = +headings[i].tagName[1]; 
+    const parentLevel = +h.tagName[1]; 
     const subHeadings = [];
     for (let j = i + 1; j < headings.length; j++) {
       const h = headings[j];
@@ -50,7 +60,7 @@ export function powerTocCore(headings, settings = {}, firstTime = true, nums = [
 
     i = i + subHeadings.length;
     if (subHeadings.length > 0) {
-      li.append(powerTocCore(subHeadings, settings, false, nums));
+      li.append(tocPleaseCore(subHeadings, config, false, nums));
     } 
 
     ++nums[nums.length - 1];
@@ -61,15 +71,11 @@ export function powerTocCore(headings, settings = {}, firstTime = true, nums = [
   nums.pop();
 
   if (firstTime) {
-    let tocClassName = settings.classes?.toc;
-    let tocID = settings.tocID;
-    const toc = elt("div", tocID, tocClassName);
+    let tocClassName = config.classes?.toc;
+    let tocID = config.tocID;
+    const toc = elt(config.wrapperTag || 'nav', tocID, tocClassName);
 
-    if (settings.title) {
-      const h = elt(`h${settings.title.h}`);
-      h.innerHTML = settings.title.html;
-      toc.append(h);
-    }
+    if (config.titleHTML) toc.append(new DOMParser().parseFromString(config.titleHTML, "text/html").body.firstElementChild);
 
     toc.append(ul);
 

@@ -1,29 +1,21 @@
 import { deepMerge, getHeadings, getTocComment } from './util.js';
-import { powerTocCore } from './core.js';
+import { tocPleaseCore } from './core.js';
 
-export default function powerToc ({
-  settings = {},
-  node = document.body,
-  targetID = null,
-  replace = false,
+export function tocPlease ({
+  config = {},
+  boundaryNode = document.body,
   render = true,
+  globalExclude = "",
 } = {}) {
-  if (!settings.globalExclude) settings.globalExclude = [];
-  if (!settings.exclude) settings.exclude = [];
+  const tocComment = getTocComment(boundaryNode);
 
-  const tocComment = getTocComment(node);
+  const mergedConfig = deepMerge(config, tocComment?.data || {});
+  const headings = getHeadings(boundaryNode, globalExclude, mergedConfig.exclude);
+  const toc = tocPleaseCore(headings, mergedConfig);
 
-  const mergedSettings = deepMerge(settings, tocComment?.data || {});
-  const headings = getHeadings(node, mergedSettings.globalExclude, mergedSettings.exclude);
-  const toc = powerTocCore(headings, mergedSettings);
+  if (!toc) return;
 
-  if (targetID && render) {
-    const elt = document.querySelector(`#${targetID}`);
-    console.log(elt);
-    if (replace) elt.replaceWith(toc);
-    else elt.innerHTML = toc.innerHTML;
-
-  } else if (tocComment && render) {
+  if (tocComment && render) {
     tocComment.node.replaceWith(toc);
   }
   return toc;
