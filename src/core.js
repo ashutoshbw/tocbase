@@ -4,7 +4,7 @@ export function tocPleaseCore(headings, config = {}, firstTime = true, nums = []
   // just a optimized way to check if the array is empty
   if (!headings[0]) return;
 
-  const ul = elt("ul", null, config.classes?.ul);
+  const ul = elt("ul", null, [config.classes?.ul, config.number && config.classes?.ulIfNumber].join(' ').trim());
 
   nums.push(1);
 
