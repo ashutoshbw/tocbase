@@ -5,7 +5,7 @@ export function tocPlease ({
   config = {},
   boundaryNode = document.body,
   render = true,
-  globalExclude = "",
+  globalExclude = null,
 } = {}) {
   const tocComment = getTocComment(boundaryNode);
 

@@ -16,13 +16,12 @@ export function deepMerge(t, ...sources) {
   return t;
 }
 
-export function getHeadings(node = document.body, globalExclude = "", exclude = "") {
+export function getHeadings(node = document.body, globalExclude = null, exclude = null) {
   const headings = [...node.querySelectorAll("h1,h2,h3,h4,h5,h6")];
-  const e1 = globalExclude.trim();
-  const e2 = exclude.trim();
-  if (!e1 && !e2) return headings;
-  const grandExclude = `:not(${e1}${e1 && e2 ? ',' : ''}${e2})`;
-  return headings.filter(h => h.matches(grandExclude));
+  if (!globalExclude && !exclude) return headings;
+  if (globalExclude?.trim() == "") throw new Error("Error at `globalExclude`, invalid selector provided.");
+  if (exclude?.trim() == "") throw new Error("Error at `exclude`, invalid selector provided.");
+  return headings.filter(h => h.matches(`:not(${[globalExclude, exclude].filter(e => e).join()})`));
 }
 
 export function getTocComment(eltNode = document.body) {

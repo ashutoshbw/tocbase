@@ -24,7 +24,7 @@ export function tocPleaseCore(headings, config = {}, firstTime = true, nums = []
       anchor.href = "#" + hID;
       anchor.setAttribute("aria-label", `Anchor link for: "${hID}"`);
 
-      if (config.anchorText) anchor.textContent = config.anchorText;
+      if (config.anchorSymbol) anchor.textContent = config.anchorSymbol;
 
       let anchorClassName = config.classes?.anchor;
       if (anchorClassName) anchor.className = anchorClassName;
