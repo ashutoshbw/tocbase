@@ -71,9 +71,7 @@ export function tocPleaseCore(headings, config = {}, firstTime = true, nums = []
   nums.pop();
 
   if (firstTime) {
-    let tocClassName = config.classes?.toc;
-    let tocID = config.tocID;
-    const toc = elt(config.wrapperTag || 'nav', tocID, tocClassName);
+    const toc = elt(config.wrapperTag || 'nav', config.tocID, config.classes?.toc);
 
     if (config.titleHTML) toc.append(new DOMParser().parseFromString(config.titleHTML, "text/html").body.firstElementChild);
 
