@@ -24,7 +24,8 @@ export function tocPleaseCore(headings, config = {}, firstTime = true, nums = []
       anchor.href = "#" + hID;
       anchor.setAttribute("aria-label", `Anchor link for: "${hID}"`);
 
-      if (config.anchorSymbol) anchor.textContent = config.anchorSymbol;
+      if (!config.anchorSymbol) config.anchorSymbol = "#";
+      anchor.textContent = config.anchorSymbol;
 
       let anchorClassName = config.classes?.anchor;
       if (anchorClassName) anchor.className = anchorClassName;
@@ -73,7 +74,7 @@ export function tocPleaseCore(headings, config = {}, firstTime = true, nums = []
   if (firstTime) {
     const toc = elt(config.wrapperTag || 'nav', config.tocID, config.classes?.toc);
 
-    if (config.titleHTML) toc.append(new DOMParser().parseFromString(config.titleHTML, "text/html").body.firstElementChild);
+    if (config.titleHTML?.trim()) toc.append(new DOMParser().parseFromString(config.titleHTML, "text/html").body.firstElementChild);
 
     toc.append(ul);
 
