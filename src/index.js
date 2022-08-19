@@ -23,7 +23,8 @@ export function tocPlease ({
   const toc = tocPleaseCore(headings, config);
 
   if (!toc) return;
-  if (render) spawnElt?.replaceWith(toc);
+
+  render && spawnElt?.replaceWith(toc);
 
   return toc;
 }
