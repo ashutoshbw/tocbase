@@ -10,7 +10,7 @@ export function tocPleaseCore(headings, config = {}, firstTime = true, nums = []
 
   for (let i = 0; i < headings.length; i++) {
     const h = headings[i]; 
-    const hID = h.id || nums.join`-`;
+    const hID = h.id || nums.join`-` + "-" + h.textContent.replace(/\s+/g, "-");
     if (!h.id) h.id = hID;
     const getDepthNumSpan = className => config.num ? `<span${className ? ` class="${className}"` : ''}>${nums.map(n => n.toLocaleString(config.numLocale || "en-US", {useGrouping: false})).join(config.hasOwnProperty("numSep") ? config.numSep: '.')}</span>${config.numPostfix || ''}${config.numSpace ? ' ' : ''}` : '';
 
