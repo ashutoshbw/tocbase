@@ -4,13 +4,13 @@ export function tocPleaseCore(headings, config = {}, firstTime = true, nums = []
   // just a optimized way to check if the array is empty
   if (!headings[0]) return;
 
-  const ul = elt("ul", null, [config.classes?.ul, config.num && config.classes?.ulIfNumber].join(' ').trim());
+  const ul = elt("ul", null, [config.classes?.ul, config.num && config.classes?.ulIfNumber].join` `.trim());
 
   nums.push(1);
 
   for (let i = 0; i < headings.length; i++) {
     const h = headings[i]; 
-    const hID = h.id || `a${nums.join("_")}`;
+    const hID = h.id || nums.join`.`;
     if (!h.id) h.id = hID;
     const getDepthNumSpan = className => config.num ? `<span${className ? ` class="${className}"` : ''}>${nums.map(n => n.toLocaleString(config.numLocale || "en-US", {useGrouping: false})).join(config.hasOwnProperty("numSep") ? config.numSep: '.')}</span>${config.numPostfix || ''}${config.numSpace ? ' ' : ''}` : '';
 
