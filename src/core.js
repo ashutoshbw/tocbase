@@ -11,7 +11,7 @@ export function tocPleaseCore(headings, config = {}, firstTime = true, nums = []
   for (let i = 0; i < headings.length; i++) {
     const h = headings[i]; 
     const hID = h.id || `a${nums.join("_")}`;
-    if (!h.id && config.modify) h.id = hID;
+    if (!h.id) h.id = hID;
     const getDepthNumSpan = className => config.num ? `<span${className ? ` class="${className}"` : ''}>${nums.map(n => n.toLocaleString(config.numLocale || "en-US", {useGrouping: false})).join(config.hasOwnProperty("numSep") ? config.numSep: '.')}</span>${config.numPostfix || ''}${config.numSpace ? ' ' : ''}` : '';
 
     const li = elt("li", null, config.classes?.li);
@@ -33,15 +33,13 @@ export function tocPleaseCore(headings, config = {}, firstTime = true, nums = []
       anchorHTML = anchor.outerHTML;
     }
 
-    if (config.modify) {
-      if (!config.anchorDir) config.anchorDir = "right";
+    if (!config.anchorDir) config.anchorDir = "right";
 
-      // aL and aR variables anchor left and right
-      let sA = config.anchorSpace ? ' ' : '';
-      let aL = config.anchorDir == "left" ? anchorHTML + sA : '';
-      let aR = config.anchorDir == "right" ? sA + anchorHTML : '';
-      h.innerHTML = aL + getDepthNumSpan(config.classes?.hDepthNum) + h.innerHTML + aR;
-    }
+    // aL and aR variables anchor left and right
+    let sA = config.anchorSpace ? ' ' : '';
+    let aL = config.anchorDir == "left" ? anchorHTML + sA : '';
+    let aR = config.anchorDir == "right" ? sA + anchorHTML : '';
+    h.innerHTML = aL + getDepthNumSpan(config.classes?.hDepthNum) + h.innerHTML + aR;
 
     /* ------ Sub heading generation start -------*/
     const parentLevel = +h.tagName[1]; 
