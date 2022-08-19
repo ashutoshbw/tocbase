@@ -16,13 +16,13 @@ export function deepMerge(t, ...sources) {
   return t;
 }
 
-export function getHeadings(node = document.body, globalExclude = "", exclude = "") {
+export function getHeadings(node = document.body, globalOmit = "", omit = "") {
   const headings = [...node.querySelectorAll("h1,h2,h3,h4,h5,h6")];
-  const e1 = globalExclude.trim();
-  const e2 = exclude.trim();
+  const e1 = globalOmit.trim();
+  const e2 = omit.trim();
   if (!e1 && !e2) return headings;
-  const grandExclude = `:not(${e1}${e1 && e2 ? ',' : ''}${e2})`;
-  return headings.filter(h => h.matches(grandExclude));
+  const grandOmit = `:not(${e1}${e1 && e2 ? ',' : ''}${e2})`;
+  return headings.filter(h => h.matches(grandOmit));
 }
 
 export function getTocComment(eltNode = document.body) {

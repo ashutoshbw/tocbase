@@ -5,12 +5,12 @@ export function tocPlease ({
   config = {},
   boundaryNode = document.body,
   render = true,
-  globalExclude = "",
+  omit = "",
 } = {}) {
   const tocComment = getTocComment(boundaryNode);
 
   const mergedConfig = deepMerge(config, tocComment?.data || {});
-  const headings = getHeadings(boundaryNode, globalExclude, mergedConfig.exclude);
+  const headings = getHeadings(boundaryNode, omit, mergedConfig.omit);
   const toc = tocPleaseCore(headings, mergedConfig);
 
   if (!toc) return;
