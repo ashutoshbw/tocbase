@@ -7,6 +7,10 @@ export function tocPlease ({
   render = true,
   omit = "",
 } = {}) {
+  // making it a one time use function
+  if (tocPlease.$) return;
+  tocPlease.$ = true;
+
   const tocComment = getTocComment(boundaryNode);
 
   const mergedConfig = deepMerge(config, tocComment?.data || {});
