@@ -12,7 +12,7 @@ export function tocPleaseCore(headings, config = {}, firstTime = true, nums = []
     const h = headings[i]; 
     const hID = h.id || `a${nums.join("_")}`;
     if (!h.id && config.modifyHeadings) h.id = hID;
-    const getDepthNumSpan = className => config.number ? `<span${className ? ` class="${className}"` : ''}>${nums.map(n => n.toLocaleString(config.numberLocale || "en-US")).join(config.hasOwnProperty("numberSeparator") ? config.numberSeparator : '.')}</span>${config.numberPostfix || ''}${config.spaceAfterNum ? ' ' : ''}` : '';
+    const getDepthNumSpan = className => config.number ? `<span${className ? ` class="${className}"` : ''}>${nums.map(n => new Intl.NumberFormat(config.numberLocale || "en-US", {useGrouping: false}).format(n)).join(config.hasOwnProperty("numberSeparator") ? config.numberSeparator : '.')}</span>${config.numberPostfix || ''}${config.spaceAfterNum ? ' ' : ''}` : '';
 
     const li = elt("li", null, config.classes?.li);
     li.innerHTML = `${getDepthNumSpan(config.classes?.tocDepthNum)}<a href="#${hID}">${h.innerHTML}</a>`;
