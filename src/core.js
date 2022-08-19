@@ -4,15 +4,15 @@ export function tocPleaseCore(headings, config = {}, firstTime = true, nums = []
   // just a optimized way to check if the array is empty
   if (!headings[0]) return;
 
-  const ul = elt("ul", null, [config.classes?.ul, config.number && config.classes?.ulIfNumber].join(' ').trim());
+  const ul = elt("ul", null, [config.classes?.ul, config.num && config.classes?.ulIfNumber].join(' ').trim());
 
   nums.push(1);
 
   for (let i = 0; i < headings.length; i++) {
     const h = headings[i]; 
     const hID = h.id || `a${nums.join("_")}`;
-    if (!h.id && config.modifyHeadings) h.id = hID;
-    const getDepthNumSpan = className => config.number ? `<span${className ? ` class="${className}"` : ''}>${nums.map(n => n.toLocaleString(config.numberLocale || "en-US", {useGrouping: false})).join(config.hasOwnProperty("numberSeparator") ? config.numberSeparator : '.')}</span>${config.numberPostfix || ''}${config.spaceAfterNum ? ' ' : ''}` : '';
+    if (!h.id && config.modify) h.id = hID;
+    const getDepthNumSpan = className => config.num ? `<span${className ? ` class="${className}"` : ''}>${nums.map(n => n.toLocaleString(config.numLocale || "en-US", {useGrouping: false})).join(config.hasOwnProperty("numSep") ? config.numSep: '.')}</span>${config.numPostfix || ''}${config.numSpace ? ' ' : ''}` : '';
 
     const li = elt("li", null, config.classes?.li);
     li.innerHTML = `${getDepthNumSpan(config.classes?.tocDepthNum)}<a href="#${hID}">${h.innerHTML}</a>`;
@@ -33,11 +33,11 @@ export function tocPleaseCore(headings, config = {}, firstTime = true, nums = []
       anchorHTML = anchor.outerHTML;
     }
 
-    if (config.modifyHeadings) {
+    if (config.modify) {
       if (!config.anchorDir) config.anchorDir = "right";
 
       // aL and aR variables anchor left and right
-      let sA = config.spaceNearAnchor ? ' ' : '';
+      let sA = config.anchorSpace ? ' ' : '';
       let aL = config.anchorDir == "left" ? anchorHTML + sA : '';
       let aR = config.anchorDir == "right" ? sA + anchorHTML : '';
       h.innerHTML = aL + getDepthNumSpan(config.classes?.hDepthNum) + h.innerHTML + aR;
