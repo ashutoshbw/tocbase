@@ -1,9 +1,10 @@
-import { deepMerge, getHeadings, getTocComment } from './util.js';
+import { getHeadings } from './util.js';
 import { tocPleaseCore } from './core.js';
 
 export function tocPlease ({
   config = {},
-  boundaryNode = document.body,
+  getFrom = "body",
+  spawnID = undefined,
   render = true,
   omit = "",
 } = {}) {
@@ -11,16 +12,18 @@ export function tocPlease ({
   if (tocPlease.$) return;
   tocPlease.$ = true;
 
-  const tocComment = getTocComment(boundaryNode);
+  const $ = id => document.querySelector(id);
 
-  const mergedConfig = deepMerge(config, tocComment?.data || {});
-  const headings = getHeadings(boundaryNode, omit, mergedConfig.omit);
-  const toc = tocPleaseCore(headings, mergedConfig);
+  const spawnElt = $("#" + spawnID);
+
+  // From now config is the merged config
+  Object.assign(config, JSON.parse(spawnElt?.innerHTML.trim() || "{}"));
+
+  const headings = getHeadings($(getFrom), omit, config.omit);
+  const toc = tocPleaseCore(headings, config);
 
   if (!toc) return;
+  if (render) spawnElt?.replaceWith(toc);
 
-  if (tocComment && render) {
-    tocComment.node.replaceWith(toc);
-  }
   return toc;
 }
