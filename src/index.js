@@ -1,30 +1,20 @@
-import { getHeadings } from './util.js';
+import { getHeadings, $ } from './util.js';
 import { tocPleaseCore } from './core.js';
 
-export function tocPlease ({
-  config = {},
-  getFrom = "body",
-  spawnID = undefined,
-  render = true,
-  omit = "",
-} = {}) {
-  // making it a one time use function
-  if (tocPlease.$) return;
-  tocPlease.$ = true;
+export function tocPlease (g = {}) {
+  // querySelector
 
-  const $ = id => document.querySelector(id);
-
-  const spawnElt = $("#" + spawnID);
+  const spawnElt = $("#" + g.spawnID);
 
   // From now config is the merged config
-  Object.assign(config, JSON.parse(spawnElt?.innerHTML.trim() || "{}"));
+  const mergedConfig = Object.assign({}, g.config, JSON.parse(spawnElt?.innerHTML.trim() || "{}"));
 
-  const headings = getHeadings($(getFrom), omit, config.omit);
-  const toc = tocPleaseCore(headings, config);
+  const headings = getHeadings(g.getFrom, g.omit, mergedConfig?.omit);
+  const toc = tocPleaseCore(headings, mergedConfig);
 
   if (!toc) return;
 
-  render && spawnElt?.replaceWith(toc);
+  spawnElt?.replaceWith(toc);
 
   return toc;
 }

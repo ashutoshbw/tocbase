@@ -17,7 +17,7 @@ export default [
       exports: "default",
       plugins: [
         terser({
-          ecma: 2020,
+          ecma: 2022,
           mangle: { toplevel: true },
           compress: {
             module: true,

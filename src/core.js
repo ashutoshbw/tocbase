@@ -22,7 +22,6 @@ export function tocPleaseCore(headings, config = {}, firstTime = true, nums = []
     if (config.anchor) {
       const anchor = elt("a");
       anchor.href = "#" + hID;
-      anchor.setAttribute("aria-label", `Anchor link for: "${hID}"`);
 
       if (!config.anchorSymbol) config.anchorSymbol = "#";
       anchor.textContent = config.anchorSymbol;

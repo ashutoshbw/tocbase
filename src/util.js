@@ -1,3 +1,5 @@
+export const $ = s => document.querySelector(s);
+
 export function elt(type, id, className) {
   const node = document.createElement(type);
   id ? node.id = id :
@@ -5,7 +7,8 @@ export function elt(type, id, className) {
   return node;
 }
 
-export function getHeadings(node = document.body, globalOmit = "", omit = "") {
+export function getHeadings(getFrom = "body", globalOmit = "", omit = "") {
+  const node = $(getFrom);
   const headings = [...node.querySelectorAll("h1,h2,h3,h4,h5,h6")];
   const e1 = globalOmit.trim();
   const e2 = omit.trim();
