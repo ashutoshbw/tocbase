@@ -1,4 +1,5 @@
 export const $ = s => document.querySelector(s);
+export const hasKey = (o, k) => o.hasOwnProperty(k);
 
 export function elt(type, id, className) {
   const node = document.createElement(type);

@@ -1,4 +1,4 @@
-import { elt } from './util.js';
+import { elt, hasKey } from './util.js';
 
 export function tocPleaseCore(headings, config = {}, firstTime = true, nums = []) {
   // just a optimized way to check if the array is empty
@@ -12,7 +12,7 @@ export function tocPleaseCore(headings, config = {}, firstTime = true, nums = []
     const h = headings[i]; 
     const hID = h.id || nums.join`-` + "-" + h.textContent.replace(/\s+/g, "-");
     if (!h.id) h.id = hID;
-    const getDepthNumSpan = className => config.num ? `<span${className ? ` class="${className}"` : ''}>${nums.map(n => n.toLocaleString(config.numLocale || "en-US", {useGrouping: false})).join(config.hasOwnProperty("numSep") ? config.numSep: '.')}</span>${config.numPostfix || ''}${config.numSpace ? ' ' : ''}` : '';
+    const getDepthNumSpan = className => config.num ? `<span${className ? ` class="${className}"` : ''}>${nums.map(n => n.toLocaleString(config.numLocale || "en-US", {useGrouping: false})).join(hasKey(config, "numSep") ? config.numSep: '.')}</span>${config.numPostfix || ''}${config.numSpace ? ' ' : ''}` : '';
 
     const li = elt("li", null, config.cLi);
     li.innerHTML = `${getDepthNumSpan(config.cTocNum)}<a href="#${hID}">${h.innerHTML}</a>`;
@@ -23,8 +23,7 @@ export function tocPleaseCore(headings, config = {}, firstTime = true, nums = []
       const anchor = elt("a");
       anchor.href = "#" + hID;
 
-      if (!config.anchorSymbol) config.anchorSymbol = "#";
-      anchor.textContent = config.anchorSymbol;
+      anchor.textContent = hasKey(config, "anchorSymbol") ? config.anchorSymbol : "#";
 
       let anchorClassName = config.anchor;
       if (anchorClassName) anchor.className = anchorClassName;
@@ -38,7 +37,7 @@ export function tocPleaseCore(headings, config = {}, firstTime = true, nums = []
     let sA = config.anchorSpace ? ' ' : '';
     let aL = config.anchorDir == "left" ? anchorHTML + sA : '';
     let aR = config.anchorDir == "right" ? sA + anchorHTML : '';
-    h.innerHTML = aL + getDepthNumSpan(config.cHNum) + h.innerHTML + aR;
+    h.innerHTML = aL + (config.hNum ? getDepthNumSpan(config.cHNum) : '') + h.innerHTML + aR;
 
     /* ------ Sub heading generation start -------*/
     const parentLevel = +h.tagName[1]; 

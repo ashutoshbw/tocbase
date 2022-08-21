@@ -7,7 +7,7 @@ export function tocPlease (g = {}) {
   const proxyElt = $("#" + g.proxyID);
 
   // From now config is the merged config
-  const mergedConfig = Object.assign({}, g.config, JSON.parse(proxyElt?.innerHTML.trim() || "{}"));
+  const mergedConfig = Object.assign({}, g.config, JSON.parse(proxyElt?.value.trim() || "{}"));
 
   const headings = getHeadings(g.getFrom, g.omit, mergedConfig?.omit);
   const toc = tocPleaseCore(headings, mergedConfig);
