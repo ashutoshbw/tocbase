@@ -1,10 +1,13 @@
 import { elt, hasKey } from './util.js';
 
+export const nodeBag = {ul:[], li:[]};
+
 export function tocPleaseCore(headings, config = {}, firstTime = true, nums = []) {
   // just a optimized way to check if the array is empty
   if (!headings[0]) return;
 
   const ul = elt("ul", null, [config.cUl, config.num && config.cUlIfNum].join` `.trim());
+  nodeBag.ul.push(ul);
 
   nums.push(1);
 
@@ -15,6 +18,7 @@ export function tocPleaseCore(headings, config = {}, firstTime = true, nums = []
     const getDepthNumSpan = className => config.num ? `<span${className ? ` class="${className}"` : ''}>${nums.map(n => n.toLocaleString(config.numLocale || "en-US", {useGrouping: false})).join(hasKey(config, "numSep") ? config.numSep: '.')}</span>${config.numPostfix || ''}${config.numSpace ? ' ' : ''}` : '';
 
     const li = elt("li", null, config.cLi);
+    nodeBag.li.push(li);
     li.innerHTML = `${getDepthNumSpan(config.cTocNum)}<a href="#${hID}">${h.innerHTML}</a>`;
 
     // make the anchor
@@ -70,7 +74,11 @@ export function tocPleaseCore(headings, config = {}, firstTime = true, nums = []
   if (firstTime) {
     const toc = elt(config.wrapperTag || 'nav', config.tocID, config.cToc);
 
-    if (config.titleHTML?.trim()) toc.append(new DOMParser().parseFromString(config.titleHTML, "text/html").body.firstElementChild);
+    if (config.titleHTML?.trim()) {
+      const title = new DOMParser().parseFromString(config.titleHTML, "text/html").body.firstElementChild;
+      nodeBag.title = title;
+      toc.append(title);
+    }
 
     toc.append(ul);
 

@@ -1,20 +1,32 @@
-import { getHeadings, $ } from './util.js';
-import { tocPleaseCore } from './core.js';
+import { getHeadings, $, $$, elt, hasKey } from './util.js';
+import { tocPleaseCore, nodeBag } from './core.js';
+
+
 
 export function tocPlease (g = {}) {
-  // querySelector
-
   const proxyElt = $("#" + g.proxyID);
 
-  // From now config is the merged config
   const mergedConfig = Object.assign({}, g.config, JSON.parse(proxyElt?.value.trim() || "{}"));
 
-  const headings = getHeadings(g.getFrom, g.omit, mergedConfig?.omit);
-  const toc = tocPleaseCore(headings, mergedConfig);
+  const hArr = getHeadings(g.getFrom, g.omit, mergedConfig?.omit);
+  const toc = tocPleaseCore(hArr, mergedConfig);
 
   if (!toc) return;
 
-  proxyElt?.replaceWith(toc);
+  const showToc = () => (proxyElt?.replaceWith(toc), toc);
 
-  return toc;
+  if (!g.plugins || g.plugins.length == 0) return showToc();
+
+  return g.plugins.reduce(
+    (acc, p) => p({
+      toc: acc,
+      showToc: showToc,
+      hArr: hArr,
+      $, $$,
+      config: mergedConfig,
+      hasKey,
+      ...nodeBag
+    }),
+    toc,
+  );
 }
