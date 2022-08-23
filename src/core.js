@@ -1,7 +1,10 @@
-import { elt, hasKey } from './util.js';
+import { elt, hasKey, getHeadings } from './util.js';
 
 export const nodeBag = {ul:[], li:[]};
 
+/*
+ * @return toc | undefined
+ */
 export function tocPleaseCore(headings, config = {}, firstTime = true, nums = []) {
   // just a optimized way to check if the array is empty
   if (!headings[0]) return;
@@ -86,3 +89,4 @@ export function tocPleaseCore(headings, config = {}, firstTime = true, nums = []
   } 
   return ul;
 }
+

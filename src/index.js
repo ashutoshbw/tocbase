@@ -1,32 +1,25 @@
-import { getHeadings, $, $$, elt, hasKey } from './util.js';
+import { $, $$, elt, hasKey, getHeadings, applyPlugins } from './util.js';
 import { tocPleaseCore, nodeBag } from './core.js';
 
-
-
 export function tocPlease (g = {}) {
-  const proxyElt = $("#" + g.proxyID);
+  // The thing that toctree gives to it's plugins
+  const bag = {
+    applyPlugins,
+    $, $$, elt, hasKey,
+    ...nodeBag
+  }
 
-  const mergedConfig = Object.assign({}, g.config, JSON.parse(proxyElt?.value.trim() || "{}"));
+  let placeholderElt;
+  if (hasKey(g, "placeholderID")) placeholderElt = $("#" + g.placeholderID);
 
-  const hArr = getHeadings(g.getFrom, g.omit, mergedConfig?.omit);
-  const toc = tocPleaseCore(hArr, mergedConfig);
+  // merged config
+  bag.config = {...(g.config || {}), ...JSON.parse(placeholderElt?.textContent.trim() || "{}")};
 
-  if (!toc) return;
+  bag.hArray = getHeadings(g.getFrom, g.omit, bag.config.omit);
 
-  const showToc = () => (proxyElt?.replaceWith(toc), toc);
+  if (!(bag.toc = tocPleaseCore(bag.hArray, bag.config))) return;
 
-  if (!g.plugins || g.plugins.length == 0) return showToc();
+  placeholderElt?.replaceWith(bag.toc);
 
-  return g.plugins.reduce(
-    (acc, p) => p({
-      toc: acc,
-      showToc: showToc,
-      hArr: hArr,
-      $, $$,
-      config: mergedConfig,
-      hasKey,
-      ...nodeBag
-    }),
-    toc,
-  );
+  return applyPlugins((g.plugins || []), bag).toc;
 }

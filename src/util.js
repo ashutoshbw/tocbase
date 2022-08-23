@@ -17,3 +17,4 @@ export function getHeadings(getFrom = "body", globalOmit = "", omit = "") {
   return headings.filter(h => h.matches(`:not(${e1}${e1 && e2 ? ',' : ''}${e2})`));
 }
 
+export const applyPlugins = (plugins, bag) => plugins.reduce((acc, p) => p(acc), bag);
