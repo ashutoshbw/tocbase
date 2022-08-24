@@ -1,6 +1,6 @@
 import { elt, hasKey } from './util.js';
 
-export const nodeBag = {ul:[], li:[]};
+export const nodeBag = {ul:[], li:[], ta: [], ha: [], tn: [], hn: []};
 
 /*
  * @return toc | undefined
@@ -18,35 +18,47 @@ export function tocPleaseCore(headings, config = {}, firstTime = true, nums = []
   for (let i = 0; i < headings.length; i++) {
     const h = headings[i]; 
 
-    if (!h.id) throw new Error("Id must be present"); 
+    if (!h.id) throw new Error(`Headings must have ids.`); 
 
-    const getDepthNumSpan = className => config.num ? `<span${className ? ` class="${className}"` : ''}>${nums.map(n => n.toLocaleString(config.numLocale || "en-US", {useGrouping: false})).join(hasKey(config, "numSep") ? config.numSep: '.')}</span>${config.numPostfix || ''}${config.numSpace ? ' ' : ''}` : '';
+    const getDepthNumSpan = className => 
+      config.num ? 
+        `<span${className ? ` class="${className}"` : ''}>${ 
+          nums
+            .map(n => n.toLocaleString(config.numLocale || "en-US", {useGrouping: false}))
+            .join(hasKey(config, "numSep") ? config.numSep: '.')
+          }${config.numPostfix || ''
+        }</span>${config.numSpace ? ' ' : ''}` 
+        : '';
 
     const li = elt("li", null, config.cLi);
     nodeBag.li.push(li);
-    li.innerHTML = `${getDepthNumSpan(config.cTocNum)}<a href="#${h.id}">${h.innerHTML}</a>`;
 
-    // make the anchor
-    let anchorHTML = '';
+    const getAnchorHTML = (hID, className, innerHTML, textContent) => {
+      let a = elt("a", null, className);
+      a.href = '#' + hID;
+      innerHTML && (a.innerHTML = innerHTML);
+      textContent && (a.textContent = textContent);
+      return a.outerHTML;
+    };
+
+    li.innerHTML = getDepthNumSpan(config.cTocNum) + getAnchorHTML(h.id, config.cTAnchor, h.innerHTML);
+    nodeBag.ta.push(li.lastChild);
+
     if (config.anchor) {
-      const anchor = elt("a");
-      anchor.href = "#" + h.id;
+      const anchorHTMLForHeading = getAnchorHTML(h.id, config.cHAnchor, 0, config.anchorSymbol);
 
-      anchor.textContent = hasKey(config, "anchorSymbol") ? config.anchorSymbol : "#";
+      const dir = config.anchorDir = config.anchorDir || "right"
 
-      let anchorClassName = config.anchor;
-      if (anchorClassName) anchor.className = anchorClassName;
-
-      anchorHTML = anchor.outerHTML;
+      let sA = config.anchorSpace ? ' ' : '';
+      h.innerHTML = (dir == "left" ? anchorHTMLForHeading + sA : '')
+                    + 
+                    (config.hNum ? getDepthNumSpan(config.cHNum) : '') 
+                    +
+                    h.innerHTML 
+                    + 
+                    (dir == "right" ? sA + anchorHTMLForHeading : '');
+      nodeBag.ha.push(dir == "left" ? h.firstChild : h.lastChild);
     }
-
-    if (!config.anchorDir) config.anchorDir = "right";
-
-    // aL and aR variables anchor left and right
-    let sA = config.anchorSpace ? ' ' : '';
-    let aL = config.anchorDir == "left" ? anchorHTML + sA : '';
-    let aR = config.anchorDir == "right" ? sA + anchorHTML : '';
-    h.innerHTML = aL + (config.hNum ? getDepthNumSpan(config.cHNum) : '') + h.innerHTML + aR;
 
     /* ------ Sub heading generation start -------*/
     const parentLevel = +h.tagName[1]; 
