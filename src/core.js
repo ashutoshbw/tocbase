@@ -20,15 +20,13 @@ export function tocPleaseCore(headings, config = {}, firstTime = true, nums = []
 
     if (!h.id) throw new Error(`Headings must have ids.`); 
 
-    const getDepthNumSpan = className => 
-      config.num ? 
-        `<span${className ? ` class="${className}"` : ''}>${ 
-          nums
-            .map(n => n.toLocaleString(config.numLocale || "en-US", {useGrouping: false}))
-            .join(hasKey(config, "numSep") ? config.numSep: '.')
-          }${config.numPostfix || ''
-        }</span>${config.numSpace ? ' ' : ''}` 
-        : '';
+    const getDepthNumSpan = className => {
+      const span = elt("span", null, className);
+      span.append(nums
+        .map(n => n.toLocaleString(config.numLocale || "en-US", {useGrouping: false}))
+        .join(hasKey(config, "numSep") ? config.numSep: '.') + (config.numPostfix || ''));
+      return span;
+    };
 
     const li = elt("li", null, config.cLi);
     nodeBag.li.push(li);
@@ -38,26 +36,32 @@ export function tocPleaseCore(headings, config = {}, firstTime = true, nums = []
       a.href = '#' + hID;
       innerHTML && (a.innerHTML = innerHTML);
       textContent && (a.textContent = textContent);
-      return a.outerHTML;
+      return a;
     };
 
-    li.innerHTML = getDepthNumSpan(config.cTocNum) + getAnchorHTML(h.id, config.cTAnchor, h.innerHTML);
-    nodeBag.ta.push(li.lastChild);
+    const tocAnchor = getAnchorHTML(h.id, config.cTAnchor, h.innerHTML);
+    li.append(tocAnchor);
+    nodeBag.ta.push(tocAnchor);
+
+    if (config.num) { 
+      const tocNumSpan = getDepthNumSpan(config.cTocNum);
+      li.prepend(tocNumSpan);
+      nodeBag.tn.push(tocNumSpan);
+    }
 
     if (config.anchor) {
-      const anchorHTMLForHeading = getAnchorHTML(h.id, config.cHAnchor, 0, config.anchorSymbol);
+      const headingAnchor = getAnchorHTML(h.id, config.cHAnchor, 0, config.anchorSymbol),
+            headingNumSpan = getDepthNumSpan(config.cHNum),
+            dir = config.anchorDir = config.anchorDir || "r";
 
-      const dir = config.anchorDir = config.anchorDir || "right"
+      if (dir == "l") h.prepend(headingAnchor);
+      if (config.hNum) {
+        h.prepend(headingNumSpan);
+        nodeBag.hn.push(headingNumSpan);
+      }
+      if (dir == "r") h.append(headingAnchor);
 
-      let sA = config.anchorSpace ? ' ' : '';
-      h.innerHTML = (dir == "left" ? anchorHTMLForHeading + sA : '')
-                    + 
-                    (config.hNum ? getDepthNumSpan(config.cHNum) : '') 
-                    +
-                    h.innerHTML 
-                    + 
-                    (dir == "right" ? sA + anchorHTMLForHeading : '');
-      nodeBag.ha.push(dir == "left" ? h.firstChild : h.lastChild);
+      nodeBag.ha.push(headingAnchor);
     }
 
     /* ------ Sub heading generation start -------*/
