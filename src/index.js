@@ -17,9 +17,15 @@ export function tocPlease (g = {}) {
 
   bag.hArray = getHeadings(g.getFrom, g.omit, bag.config.omit);
 
+  let pluginSliceIndex = 0;
+  if (g.plugins && g.plugins[0]?.name == "autoID") {
+    g.plugins[0]({hArray: bag.hArray});
+    pluginSliceIndex = 1;
+  }
+
   if (!(bag.toc = tocPleaseCore(bag.hArray, bag.config))) return;
 
   placeholderElt?.replaceWith(bag.toc);
 
-  return applyPlugins((g.plugins || []), bag).toc;
+  return applyPlugins((g.plugins || []).slice(pluginSliceIndex), bag).toc;
 }

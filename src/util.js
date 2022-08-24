@@ -18,3 +18,4 @@ export function getHeadings(getFrom = "body", globalOmit = "", omit = "") {
 }
 
 export const applyPlugins = (plugins, bag) => plugins.reduce((acc, p) => p(acc), bag);
+

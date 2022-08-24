@@ -1,34 +1,36 @@
-import { elt, hasKey, getHeadings } from './util.js';
+import { elt, hasKey } from './util.js';
 
 export const nodeBag = {ul:[], li:[]};
 
 /*
  * @return toc | undefined
  */
+
 export function tocPleaseCore(headings, config = {}, firstTime = true, nums = []) {
   // just a optimized way to check if the array is empty
   if (!headings[0]) return;
 
-  const ul = elt("ul", null, [config.cUl, config.num && config.cUlIfNum].join` `.trim());
+  const ul = elt("ul", null, [config.cUl, config.num ? config.cUlIfNum : null].join` `.trim());
   nodeBag.ul.push(ul);
 
   nums.push(1);
 
   for (let i = 0; i < headings.length; i++) {
     const h = headings[i]; 
-    const hID = h.id || nums.join`-` + "-" + h.textContent.replace(/\s+/g, "-");
-    if (!h.id) h.id = hID;
+
+    if (!h.id) throw new Error("Id must be present"); 
+
     const getDepthNumSpan = className => config.num ? `<span${className ? ` class="${className}"` : ''}>${nums.map(n => n.toLocaleString(config.numLocale || "en-US", {useGrouping: false})).join(hasKey(config, "numSep") ? config.numSep: '.')}</span>${config.numPostfix || ''}${config.numSpace ? ' ' : ''}` : '';
 
     const li = elt("li", null, config.cLi);
     nodeBag.li.push(li);
-    li.innerHTML = `${getDepthNumSpan(config.cTocNum)}<a href="#${hID}">${h.innerHTML}</a>`;
+    li.innerHTML = `${getDepthNumSpan(config.cTocNum)}<a href="#${h.id}">${h.innerHTML}</a>`;
 
     // make the anchor
     let anchorHTML = '';
     if (config.anchor) {
       const anchor = elt("a");
-      anchor.href = "#" + hID;
+      anchor.href = "#" + h.id;
 
       anchor.textContent = hasKey(config, "anchorSymbol") ? config.anchorSymbol : "#";
 
