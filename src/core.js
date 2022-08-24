@@ -16,9 +16,8 @@ export function tocPleaseCore(headings, config = {}, firstTime = true, nums = []
   nums.push(1);
 
   for (let i = 0; i < headings.length; i++) {
-    const h = headings[i]; 
-
     if (!h.id) throw new Error(`Headings must have ids.`); 
+    const h = headings[i]; 
 
     const getDepthNumSpan = className => {
       const span = elt("span", null, className);
@@ -34,8 +33,8 @@ export function tocPleaseCore(headings, config = {}, firstTime = true, nums = []
     const getAnchorHTML = (hID, className, innerHTML, textContent) => {
       let a = elt("a", null, className);
       a.href = '#' + hID;
-      innerHTML && (a.innerHTML = innerHTML);
-      textContent && (a.textContent = textContent);
+      if (innerHTML) a.innerHTML = innerHTML;
+      if (textContent) a.textContent = textContent;
       return a;
     };
 
