@@ -16,8 +16,8 @@ export function tocPleaseCore(headings, config = {}, firstTime = true, nums = []
   nums.push(1);
 
   for (let i = 0; i < headings.length; i++) {
-    if (!h.id) throw new Error(`Headings must have ids.`); 
     const h = headings[i]; 
+    if (!h.id) throw new Error(`Headings must have ids.`); 
 
     const getDepthNumSpan = className => {
       const span = elt("span", null, className);
