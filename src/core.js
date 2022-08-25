@@ -51,14 +51,14 @@ export function tocPleaseCore(headings, config = {}, firstTime = true, nums = []
     if (config.anchor) {
       const headingAnchor = getAnchorHTML(h.id, config.cHAnchor, 0, config.anchorSymbol),
             headingNumSpan = getDepthNumSpan(config.cHNum),
-            dir = config.anchorDir = config.anchorDir || "r";
+            dir = config.anchorDir = config.anchorDir == "r" ? "r" : "l";
 
       if (config.hNum) {
         h.prepend(headingNumSpan);
         nodeBag.hn.push(headingNumSpan);
       }
       if (dir == "l") h.prepend(headingAnchor);
-      if (dir == "r") h.append(headingAnchor);
+      else h.append(headingAnchor);
 
       nodeBag.ha.push(headingAnchor);
     }
