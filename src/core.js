@@ -57,6 +57,7 @@ export function tocPleaseCore(headings, config = {}, firstTime = true, nums = []
         h.prepend(headingNumSpan);
         nodeBag.hn.push(headingNumSpan);
       }
+
       if (dir == "l") h.prepend(headingAnchor);
       else h.append(headingAnchor);
 
@@ -68,7 +69,7 @@ export function tocPleaseCore(headings, config = {}, firstTime = true, nums = []
     const subHeadings = [];
     for (let j = i + 1; j < headings.length; j++) {
       const h = headings[j];
-      const level = +headings[j].tagName[1]; 
+      const level = +h.tagName[1];
 
       if (level > parentLevel) {
         subHeadings.push(h);
