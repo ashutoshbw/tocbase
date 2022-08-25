@@ -53,11 +53,11 @@ export function tocPleaseCore(headings, config = {}, firstTime = true, nums = []
             headingNumSpan = getDepthNumSpan(config.cHNum),
             dir = config.anchorDir = config.anchorDir || "r";
 
-      if (dir == "l") h.prepend(headingAnchor);
       if (config.hNum) {
         h.prepend(headingNumSpan);
         nodeBag.hn.push(headingNumSpan);
       }
+      if (dir == "l") h.prepend(headingAnchor);
       if (dir == "r") h.append(headingAnchor);
 
       nodeBag.ha.push(headingAnchor);
