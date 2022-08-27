@@ -2,6 +2,19 @@ import { terser } from 'rollup-plugin-terser';
 const input_CJS_ESM = ["src/index.js"];
 const inputUMD = ["src/index.umd.js"];
 
+const terserConfig = {
+  ecma: 2022,
+  mangle: { toplevel: true },
+  compress: {
+    module: true,
+    toplevel: true,
+    unsafe_arrows: true,
+    drop_console: true,
+    drop_debugger: true,
+  },
+  output: { quote_style: 1 }
+};
+
 export default [
   // UMD
   {
@@ -11,24 +24,11 @@ export default [
       clearScreen: false
     },
     output: {
-      file: `./dist/cdn.min.js`,
+      file: `./dist/cdn.umd.min.js`,
       format: 'umd',
       name: "baseToc",
       exports: "default",
-      plugins: [
-        terser({
-          ecma: 2022,
-          mangle: { toplevel: true },
-          compress: {
-            module: true,
-            toplevel: true,
-            unsafe_arrows: true,
-            drop_console: true,
-            drop_debugger: true,
-          },
-          output: { quote_style: 1 }
-        })
-      ],
+      plugins: [terser(terserConfig)],
     },
   },
   // CJS and ESM
@@ -36,23 +36,15 @@ export default [
     input: input_CJS_ESM,
     output: [
       {
+        file: `./dist/cdn.es.min.js`,
+        format: "es",
+        exports: "named",
+        plugins: [terser(terserConfig)],
+      },
+      {
         file: `./dist/index.js`,
         format: "es",
         exports: "named",
-        plugins: [
-          terser({
-            ecma: 2022,
-            mangle: { toplevel: true },
-            compress: {
-              module: true,
-              toplevel: true,
-              unsafe_arrows: true,
-              drop_console: true,
-              drop_debugger: true,
-            },
-            output: { quote_style: 1 }
-          })
-        ],
       },
       {
         file: `./dist/index.cjs`,
@@ -62,4 +54,3 @@ export default [
     ],
   }
 ]
-
