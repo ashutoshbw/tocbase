@@ -1,7 +1,7 @@
 import { $, $$, elt, hasKey, getHeadings, applyPlugins } from './util.js';
-import { tocPleaseCore, nodeBag } from './core.js';
+import { createToc, nodeBag } from './create-toc.js';
 
-export function tocPlease (g = {}) {
+export function baseToc(g = {}) {
   // The thing that toctree gives to it's plugins
   const bag = {
     applyPlugins,
@@ -23,7 +23,7 @@ export function tocPlease (g = {}) {
     pluginSliceIndex = 1;
   }
 
-  if (!(bag.toc = tocPleaseCore(bag.hArray, bag.config))) return;
+  if (!(bag.toc = createToc(bag.hArray, bag.config))) return;
 
   placeholderElt?.replaceWith(bag.toc);
 

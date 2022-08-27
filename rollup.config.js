@@ -13,7 +13,7 @@ export default [
     output: {
       file: `./dist/cdn.min.js`,
       format: 'umd',
-      name: "tocPlease",
+      name: "baseToc",
       exports: "default",
       plugins: [
         terser({
@@ -39,6 +39,20 @@ export default [
         file: `./dist/index.js`,
         format: "es",
         exports: "named",
+        plugins: [
+          terser({
+            ecma: 2022,
+            mangle: { toplevel: true },
+            compress: {
+              module: true,
+              toplevel: true,
+              unsafe_arrows: true,
+              drop_console: true,
+              drop_debugger: true,
+            },
+            output: { quote_style: 1 }
+          })
+        ],
       },
       {
         file: `./dist/index.cjs`,

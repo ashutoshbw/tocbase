@@ -1,1 +1,1 @@
-# ⚡ Power ToC ⚡
+# Base ToC

@@ -1,6 +1,6 @@
 {
   "type": "module",
-  "name": "toc-please",
+  "name": "base-toc",
   "version": "1.0.0",
   "description": "",
   "exports": {

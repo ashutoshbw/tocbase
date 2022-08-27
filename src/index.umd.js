@@ -1,1 +1,1 @@
-export {tocPlease as default} from "./index.js";
+export {baseToc as default} from "./index.js";

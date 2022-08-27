@@ -2,7 +2,7 @@ import { elt, hasKey } from './util.js';
 
 export const nodeBag = {ul:[], li:[], ta: [], ha: [], tn: [], hn: []};
 
-export function tocPleaseCore(headings, config = {}, firstTime = true, nums = []) {
+export function createToc(headings, config = {}, firstTime = true, nums = []) {
   // just a optimized way to check if the array is empty
   if (!headings[0]) return;
 
@@ -69,7 +69,7 @@ export function tocPleaseCore(headings, config = {}, firstTime = true, nums = []
     /* ------ Subheading generation end -------*/
 
     if (subHeadings.length > 0) {
-      li.append(tocPleaseCore(subHeadings, config, false, nums));
+      li.append(createToc(subHeadings, config, false, nums));
     } 
 
     ul.append(li);
