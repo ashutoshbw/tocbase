@@ -19,7 +19,9 @@ function createUL(li) {
 }
 
 function h2ul(headings, rootUL) {
-  if (headings.length == 0) return;
+  // Same as checking `headings.length == 0` but a bit shorter.
+  // Assuming there is no holes in the array.
+  if (!headings[0]) return;
 
   // This function is for getting the right UL parent
   // for LI elements to append to it. I'm creating the UL
@@ -29,7 +31,7 @@ function h2ul(headings, rootUL) {
   // return value. The fallback also helps for the first
   // iteration when lastLI is `undefined`.
   //
-  // The following works because it can be shown that 
+  // The following works because it can be proved that 
   // `node` can't be `null` when `n` is 0.
   const nthParent = (n, node) => n == 0 ? node :
                                  !node ? rootUL : nthParent(n - 1, node.parentElement);
