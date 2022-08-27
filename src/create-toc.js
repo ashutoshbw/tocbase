@@ -1,13 +1,13 @@
 import { elt, hasKey } from './util.js';
 
-export const nodeBag = {ul:[], li:[], ta: [], ha: [], tn: [], hn: []};
+export const nodeBag = {ulol:[], li:[], ta: [], ha: [], tn: [], hn: []};
 
 export function createToc(headings, config = {}, firstTime = true, nums = []) {
   // just a optimized way to check if the array is empty
   if (!headings[0]) return;
 
-  const ul = elt("ul", null, [config.cUl, config.num ? config.cUlIfNum : null].join` `.trim());
-  nodeBag.ul.push(ul);
+  const ulol = elt(config.ulol || "ul", null, [config.cUl, config.num ? config.cUlIfNum : null].join` `.trim());
+  nodeBag.ulol.push(ulol);
 
   nums.push(1);
 
@@ -72,7 +72,7 @@ export function createToc(headings, config = {}, firstTime = true, nums = []) {
       li.append(createToc(subHeadings, config, false, nums));
     } 
 
-    ul.append(li);
+    ulol.append(li);
 
     ++nums[nums.length - 1];
     i = i + subHeadings.length;
@@ -90,9 +90,9 @@ export function createToc(headings, config = {}, firstTime = true, nums = []) {
       toc.append(title);
     }
 
-    toc.append(ul);
+    toc.append(ulol);
 
     return toc;
   } 
-  return ul;
+  return ulol;
 }
