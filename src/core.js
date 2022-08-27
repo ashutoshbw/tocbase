@@ -2,10 +2,6 @@ import { elt, hasKey } from './util.js';
 
 export const nodeBag = {ul:[], li:[], ta: [], ha: [], tn: [], hn: []};
 
-/*
- * @return toc | undefined
- */
-
 export function tocPleaseCore(headings, config = {}, firstTime = true, nums = []) {
   // just a optimized way to check if the array is empty
   if (!headings[0]) return;
@@ -64,30 +60,22 @@ export function tocPleaseCore(headings, config = {}, firstTime = true, nums = []
       nodeBag.ha.push(headingAnchor);
     }
 
-    /* ------ Sub heading generation start -------*/
-    const parentLevel = +h.tagName[1]; 
+    /* ------ Subheading generation start -------*/
     const subHeadings = [];
     for (let j = i + 1; j < headings.length; j++) {
-      const h = headings[j];
-      const level = +h.tagName[1];
-
-      if (level > parentLevel) {
-        subHeadings.push(h);
-      } else {
-        break;
-      }
+      if (+headings[j].tagName[1] > h.tagName[1]) subHeadings.push(headings[j]);
+      else break;
     }
-    /* ------ Sub heading generation end -------*/
+    /* ------ Subheading generation end -------*/
 
-
-    i = i + subHeadings.length;
     if (subHeadings.length > 0) {
       li.append(tocPleaseCore(subHeadings, config, false, nums));
     } 
 
-    ++nums[nums.length - 1];
-
     ul.append(li);
+
+    ++nums[nums.length - 1];
+    i = i + subHeadings.length;
   }
 
   nums.pop();
@@ -95,9 +83,10 @@ export function tocPleaseCore(headings, config = {}, firstTime = true, nums = []
   if (firstTime) {
     const toc = elt(config.wrapperTag || 'nav', config.tocID, config.cToc);
 
-    if (config.titleHTML?.trim()) {
-      const title = new DOMParser().parseFromString(config.titleHTML, "text/html").body.firstElementChild;
-      nodeBag.title = title;
+    if (config.titleText?.trim()) {
+      const title = elt("h2", null, config.cTitle); 
+      title.textContent = config.titleText;
+      nodeBag.titleText = title;
       toc.append(title);
     }
 
@@ -107,4 +96,3 @@ export function tocPleaseCore(headings, config = {}, firstTime = true, nums = []
   } 
   return ul;
 }
-
