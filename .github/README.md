@@ -9,5 +9,3 @@ A JavaScript library for quickly creating a table of contents inside the browser
 - It has a nested plugin system in-built. That means a plugin can have other sub-plugins. It is super easy to write a plugin if you want to extend it.
 - Size is less than 1.5 kb (minimized + gzipped).
 
-## Documentation
-For full documentation, visit [github README](https://github.com/ashutoshbw/toc-base).

@@ -2,7 +2,7 @@
   "type": "module",
   "name": "toc-base",
   "version": "1.0.0",
-  "description": "",
+  "description": "A JavaScript library for quickly creating a table of contents inside the browser.",
   "exports": {
     ".": {
       "import": "./dist/index.js",
