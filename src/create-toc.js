@@ -47,7 +47,7 @@ export function createToc(headings, config = {}, firstTime = true, nums = []) {
     if (config.anchor) {
       const headingAnchor = getAnchorHTML(h.id, config.cHAnchor, 0, config.anchorSymbol),
             headingNumSpan = getDepthNumSpan(config.cHNum),
-            dir = config.anchorDir = config.anchorDir == "r" ? "r" : "l";
+            dir = config.anchorDir = config.anchorDir == "l" ? "l" : "r";
 
       if (config.hNum) {
         h.prepend(headingNumSpan);
