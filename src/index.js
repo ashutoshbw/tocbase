@@ -1,7 +1,7 @@
 import { $, $$, elt, hasKey, getHeadings, applyPlugins } from './util.js';
 import { createToc, nodeBag } from './create-toc.js';
 
-export function tocBase(g = {}) {
+export function tocbase(g = {}) {
   // The thing that toctree gives to it's plugins
   const bag = {
     applyPlugins,

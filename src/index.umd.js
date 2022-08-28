@@ -1,1 +1,1 @@
-export {tocBase as default} from "./index.js";
+export {tocbase as default} from "./index.js";
