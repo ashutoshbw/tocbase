@@ -3,6 +3,10 @@
   "name": "tocbase",
   "version": "1.0.0",
   "description": "A JavaScript library for quickly creating a table of contents inside the browser.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ashutoshbw/tocbase.git"
+  },
   "exports": {
     ".": {
       "import": "./dist/index.js",
@@ -19,9 +23,26 @@
     "dev": "rollup -c -w",
     "prepublishOnly": "npm run clean && npm run build"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "tocbase",
+    "table of contents",
+    "toc",
+    "structure",
+    "generate",
+    "html",
+    "vanilla",
+    "plugin",
+    "table",
+    "of",
+    "contents"
+  ],
+  "author": {
+    "name": "Ashutosh Biswas",
+    "email": "ashutoshbw314@gmail.com",
+    "url": "https://ashutoshbiswas.dev"
+  },
+  "license": "MIT",
+  "bugs": "https://github.com/ashutoshbw/tocbase/issues",
   "devDependencies": {
     "rollup": "^2.78.0",
     "rollup-plugin-terser": "^7.0.2"
