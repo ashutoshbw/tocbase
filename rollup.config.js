@@ -26,7 +26,7 @@ export default [
     output: {
       file: `./dist/cdn.umd.min.js`,
       format: 'umd',
-      name: "baseToc",
+      name: "tocbase",
       exports: "default",
       plugins: [terser(terserConfig)],
     },
