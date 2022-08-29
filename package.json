@@ -1,12 +1,13 @@
 {
   "type": "module",
   "name": "tocbase",
-  "version": "1.1.1",
+  "version": "2.1.1",
   "description": "A JavaScript library for quickly creating a table of contents inside the browser.",
   "repository": {
     "type": "git",
     "url": "https://github.com/ashutoshbw/tocbase.git"
   },
+  "browser": "./dist/cdn.umd.min.js",
   "exports": {
     ".": {
       "import": "./dist/index.js",

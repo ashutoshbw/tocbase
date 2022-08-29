@@ -1,6 +1,5 @@
 import { terser } from 'rollup-plugin-terser';
-const input_CJS_ESM = ["src/index.js"];
-const inputUMD = ["src/index.umd.js"];
+const input= ["src/index.js"];
 
 const terserConfig = {
   ecma: 2022,
@@ -18,7 +17,7 @@ const terserConfig = {
 export default [
   // UMD
   {
-    input: inputUMD,
+    input,
     watch: {
       include: './src/**',
       clearScreen: false
@@ -33,23 +32,17 @@ export default [
   },
   // CJS and ESM
   {
-    input: input_CJS_ESM,
+    input,
     output: [
-      {
-        file: `./dist/cdn.es.min.js`,
-        format: "es",
-        exports: "named",
-        plugins: [terser(terserConfig)],
-      },
       {
         file: `./dist/index.js`,
         format: "es",
-        exports: "named",
+        exports: "default",
       },
       {
         file: `./dist/index.cjs`,
         format: "cjs",
-        exports: "named",
+        exports: "default",
       },
     ],
   }
