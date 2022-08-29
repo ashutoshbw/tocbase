@@ -1,10 +1,9 @@
-import { $, $$, elt, hasKey, getHeadings, applyPlugins } from './util.js';
+import { $, $$, elt, hasKey, getHeadings, setupPlugins } from './util.js';
 import { createToc, nodeBag } from './create-toc.js';
 
 export default function tocbase(g = {}) {
-  // The thing that toctree gives to it's plugins
   const bag = {
-    applyPlugins,
+    setupPlugins,
     $, $$, elt, hasKey,
     ...nodeBag
   }
@@ -18,8 +17,8 @@ export default function tocbase(g = {}) {
   bag.hArray = getHeadings(g.getFrom, g.omit, bag.config.omit);
 
   let pluginSliceIndex = 0;
-  if (g.plugins && g.plugins[0]?.name == "autoID") {
-    g.plugins[0]({hArray: bag.hArray});
+  if (g.plugins && g.plugins[0]?.name == "auto-id") {
+    g.plugins[0].setup({...bag});
     pluginSliceIndex = 1;
   }
 
@@ -27,5 +26,5 @@ export default function tocbase(g = {}) {
 
   placeholderElt?.replaceWith(bag.toc);
 
-  return applyPlugins((g.plugins || []).slice(pluginSliceIndex), bag).toc;
+  return setupPlugins((g.plugins || []).slice(pluginSliceIndex), bag).toc;
 }
