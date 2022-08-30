@@ -44,15 +44,15 @@ export function createToc(headings, config = {}, firstTime = true, nums = []) {
       nodeBag.tn.push(tocNumSpan);
     }
 
+    if (config.hNum) {
+      h.prepend(headingNumSpan);
+      nodeBag.hn.push(headingNumSpan);
+    }
+
     if (config.anchor) {
       const headingAnchor = getAnchorHTML(h.id, config.cHAnchor, 0, config.anchorSymbol),
             headingNumSpan = getDepthNumSpan(config.cHNum),
             dir = config.anchorDir = config.anchorDir == "l" ? "l" : "r";
-
-      if (config.hNum) {
-        h.prepend(headingNumSpan);
-        nodeBag.hn.push(headingNumSpan);
-      }
 
       if (dir == "l") h.prepend(headingAnchor);
       else h.append(headingAnchor);
