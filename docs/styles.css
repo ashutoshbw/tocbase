@@ -1,5 +1,11 @@
-.num-toc {
+.num-toc, .num-h {
   margin-right: 5px;
+  color: #257bc2;
+}
+
+.h-anchor {
+  margin-left: 0.2em;
+  text-decoration: none;
 }
 
 .ul-numbered {

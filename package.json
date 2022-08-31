@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "tocbase",
-  "version": "3.1.3",
+  "version": "3.2.3",
   "description": "A JavaScript library for quickly creating a table of contents inside the browser.",
   "repository": {
     "type": "git",
@@ -21,7 +21,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rm -rf dist/*",
     "build": "rollup -c",
-    "build-doc": "pandoc -s -t html --standalone --template=./docs/template.html ./docs/doc.md -o ./docs/index.html",
+    "build-doc": "pandoc --standalone --template=./docs/template.html ./docs/doc.md -o ./docs/index.html",
     "dev": "rollup -c -w",
     "prepublishOnly": "npm run clean && npm run build"
   },

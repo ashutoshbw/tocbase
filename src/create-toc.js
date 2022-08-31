@@ -15,6 +15,8 @@ export function createToc(headings, config = {}, firstTime = true, nums = []) {
     const h = headings[i]; 
     if (!h.id) throw new Error(`Headings must have ids.`); 
 
+    hasKey(config, "cH") && h.classList.add(config.cH);
+
     const getDepthNumSpan = className => {
       const span = elt("span", null, className);
       span.append(nums
