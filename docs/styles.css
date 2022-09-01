@@ -1,13 +1,62 @@
-.num-toc, .num-h {
-  margin-right: 5px;
-  color: #257bc2;
+/* Below styles related to ToC */
+.toc {
+  padding: 10px;
+}
+
+.toc h2 {
+  font-family: monospace;
+  border-bottom: 2px solid lightblue;
+  margin: 0;
+}
+
+.ul-numbered {
+  list-style-type: none;
+}
+
+.toc a {
+  text-decoration: none; 
+  font-family: monospace;
+}
+
+
+.toc a:hover {
+  text-decoration: underline; 
+  font-weight: bold;
+}
+
+.toc-num { margin-right: 5px; }
+.toc-num { color: #1c5d63; }
+
+/* Below styles related to headings */
+
+.toc-h {
+  color: #0c2224;
+  font-family: monospace;
+  border-bottom: 2px solid lightblue;
+}
+
+.h-num { 
+  margin-right: 0.5em;
+  color: #3ec9d6;
+}
+
+.toc-h:hover .h-num {
+  color: #1c5d63; 
 }
 
 .h-anchor {
   margin-left: 0.2em;
   text-decoration: none;
+  display: none;
 }
 
-.ul-numbered {
-  list-style-type: none;
+.toc-h:hover .h-anchor {
+  color: blue; 
+  display: inline;
+}
+
+pre {
+  border: 1px solid gray;
+  border-radius: 5px;
+  padding: 0.5em;
 }

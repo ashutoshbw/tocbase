@@ -6,7 +6,7 @@ export function createToc(headings, config = {}, firstTime = true, nums = []) {
   // just a optimized way to check if the array is empty
   if (!headings[0]) return;
 
-  const ulol = elt(config.ulol || "ul", null, [config.cUl, config.num ? config.cUlIfNum : null].join` `.trim());
+  const ulol = elt(config.ulol || "ul", null, firstTime && config.cRootUl);
   nodeBag.ulol.push(ulol);
 
   nums.push(1);
