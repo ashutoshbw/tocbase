@@ -9,8 +9,9 @@
   margin: 0;
 }
 
-.ul-numbered {
+.toc-root-ul {
   list-style-type: none;
+  border: 1px solid blue;
 }
 
 .toc a {

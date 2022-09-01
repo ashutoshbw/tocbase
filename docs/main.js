@@ -7,7 +7,7 @@ tocbase({
     anchorSymbol: "#",
 
     cH: "toc-h",
-    cUlIfNum: "ul-numbered",
+    cRootUl: "toc-root-ul",
     cTocNum: "toc-num",
     cHAnchor: "h-anchor",
     cHNum: "h-num",

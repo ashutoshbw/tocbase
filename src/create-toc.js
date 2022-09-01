@@ -7,6 +7,7 @@ export function createToc(headings, config = {}, firstTime = true, nums = []) {
   if (!headings[0]) return;
 
   const ulol = elt(config.ulol || "ul", null, firstTime && config.cRootUl);
+  config.cUl && ulol.classList.add(config.cUl);
   nodeBag.ulol.push(ulol);
 
   nums.push(1);
