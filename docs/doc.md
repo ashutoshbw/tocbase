@@ -4,10 +4,9 @@ date: August 31, 2022
 ---
 
 # Tocbase
-
 <a href="https://bundlephobia.com/package/tocbase" target="_blank"><img src="https://img.shields.io/bundlephobia/minzip/tocbase?color=green" alt="Minimized and gzipped size"></a>
 
-A JavaScript library for quickly creating a table of contents inside the browser.
+An exciting to way to build table of contents in Browser.
 
 <p id="toc"></p>
 
