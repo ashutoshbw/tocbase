@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "tocbase",
-  "version": "3.2.3",
+  "version": "4.2.3",
   "description": "A JavaScript library for quickly creating a table of contents inside the browser.",
   "repository": {
     "type": "git",
