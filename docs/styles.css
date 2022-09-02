@@ -1,4 +1,8 @@
 /* Below styles related to ToC */
+body {
+  font-family: monospace;
+}
+
 .toc {
   padding: 10px;
 }
@@ -10,7 +14,8 @@
 }
 
 .toc-ul {
-  list-style-type: none;
+  list-style-type: circle;
+  padding-left: 20px;
 }
 
 .toc a {
@@ -24,8 +29,6 @@
   font-weight: bold;
 }
 
-.toc-num { margin-right: 5px; }
-.toc-num { color: #1c5d63; }
 
 /* Below styles related to headings */
 
@@ -33,15 +36,6 @@
   color: #0c2224;
   font-family: monospace;
   border-bottom: 2px solid lightblue;
-}
-
-.h-num { 
-  margin-right: 0.5em;
-  color: #3ec9d6;
-}
-
-.toc-h:hover .h-num {
-  color: #1c5d63; 
 }
 
 .h-anchor {
@@ -59,4 +53,15 @@ pre {
   border: 1px solid gray;
   border-radius: 5px;
   padding: 0.5em;
+  overflow: auto;
+  background: black;
+  color: white;
 }
+
+code {
+  background: black;
+  color: white;
+  padding-inline: 2px;
+  border-radius: 5px;
+}
+

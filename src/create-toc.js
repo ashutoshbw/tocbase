@@ -1,14 +1,18 @@
 import { elt, hasKey } from './util.js';
 
-export const nodeBag = {ulol:[], li:[], ta: [], ha: [], tn: [], hn: []};
+export const nodeBag = {ulOl:[], li:[], ta: [], ha: [], tn: [], hn: []};
 
 export function createToc(headings, config = {}, firstTime = true, nums = []) {
   // just a optimized way to check if the array is empty
   if (!headings[0]) return;
 
-  const ulol = elt(config.ulol || "ul", null, firstTime && config.cRootUl);
-  config.cUl && ulol.classList.add(config.cUl);
-  nodeBag.ulol.push(ulol);
+  const ulOl = elt(config.ulOl || "ul", null, firstTime && config.cRootUlOl);
+
+  if (!config.tocNum)
+    config.cUlOl && ulOl.classList.add(config.cUlOl);
+  else config.cNumUlOl && ulOl.classList.add(config.cNumUlOl);
+
+  nodeBag.ulOl.push(ulOl);
 
   nums.push(1);
 
@@ -22,7 +26,7 @@ export function createToc(headings, config = {}, firstTime = true, nums = []) {
       const span = elt("span", null, className);
       span.append(nums
         .map(n => n.toLocaleString(config.numLocale || "en-US", {useGrouping: false}))
-        .join(hasKey(config, "numSep") ? config.numSep: '.') + (config.numPostfix || ''));
+        .join(hasKey(config, "numSep") ? config.numSep : '.') + (config.numPostfix || ''));
       return span;
     };
 
@@ -37,11 +41,11 @@ export function createToc(headings, config = {}, firstTime = true, nums = []) {
       return a;
     };
 
-    const tocAnchor = getAnchorHTML(h.id, config.cTAnchor, h.innerHTML);
+    const tocAnchor = getAnchorHTML(h.id, config.cTocAnchor, h.innerHTML);
     li.append(tocAnchor);
     nodeBag.ta.push(tocAnchor);
 
-    if (config.num) { 
+    if (config.tocNum) { 
       const tocNumSpan = getDepthNumSpan(config.cTocNum);
       li.prepend(tocNumSpan);
       nodeBag.tn.push(tocNumSpan);
@@ -76,7 +80,7 @@ export function createToc(headings, config = {}, firstTime = true, nums = []) {
       li.append(createToc(subHeadings, config, false, nums));
     } 
 
-    ulol.append(li);
+    ulOl.append(li);
 
     ++nums[nums.length - 1];
     i = i + subHeadings.length;
@@ -85,7 +89,7 @@ export function createToc(headings, config = {}, firstTime = true, nums = []) {
   nums.pop();
 
   if (firstTime) {
-    const toc = elt(config.wrapperTag || 'nav', config.tocID, config.cToc);
+    const toc = elt(config.wrapperTag || 'nav', config.tocId, config.cToc);
 
     if (config.titleText?.trim()) {
       const title = elt("h2", null, config.cTitle); 
@@ -94,9 +98,9 @@ export function createToc(headings, config = {}, firstTime = true, nums = []) {
       toc.append(title);
     }
 
-    toc.append(ulol);
+    toc.append(ulOl);
 
     return toc;
   } 
-  return ulol;
+  return ulOl;
 }

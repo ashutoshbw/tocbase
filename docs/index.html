@@ -10,242 +10,333 @@
     <script src="https://www.unpkg.com/tocbase-plugin-smart-indent@latest/dist/cdn.umd.min.js"></script>
     <script defer src="main.js"></script>
     <link rel="stylesheet" href="styles.css">
-<style>
-html {
-  line-height: 1.5;
-  font-family: Georgia, serif;
-  font-size: 20px;
-  color: #1a1a1a;
-  background-color: #fdfdfd;
-}
-body {
-  margin: 0 auto;
-  max-width: 36em;
-  padding-left: 50px;
-  padding-right: 50px;
-  padding-top: 50px;
-  padding-bottom: 50px;
-  hyphens: auto;
-  overflow-wrap: break-word;
-  text-rendering: optimizeLegibility;
-  font-kerning: normal;
-}
-@media (max-width: 600px) {
-  body {
-    font-size: 0.9em;
-    padding: 1em;
-  }
-  h1 {
-    font-size: 1.8em;
-  }
-}
-@media print {
-  body {
-    background-color: transparent;
-    color: black;
-    font-size: 12pt;
-  }
-  p, h2, h3 {
-    orphans: 3;
-    widows: 3;
-  }
-  h2, h3, h4 {
-    page-break-after: avoid;
-  }
-}
-p {
-  margin: 1em 0;
-}
-a {
-  color: #1a1a1a;
-}
-a:visited {
-  color: #1a1a1a;
-}
-img {
-  max-width: 100%;
-}
-h1, h2, h3, h4, h5, h6 {
-  margin-top: 1.4em;
-}
-h5, h6 {
-  font-size: 1em;
-  font-style: italic;
-}
-h6 {
-  font-weight: normal;
-}
-ol, ul {
-  padding-left: 1.7em;
-  margin-top: 1em;
-}
-li > ol, li > ul {
-  margin-top: 0;
-}
-blockquote {
-  margin: 1em 0 1em 1.7em;
-  padding-left: 1em;
-  border-left: 2px solid #e6e6e6;
-  color: #606060;
-}
-code {
-  font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
-  font-size: 85%;
-  margin: 0;
-}
-pre {
-  margin: 1em 0;
-  overflow: auto;
-}
-pre code {
-  padding: 0;
-  overflow: visible;
-  overflow-wrap: normal;
-}
-.sourceCode {
- background-color: transparent;
- overflow: visible;
-}
-hr {
-  background-color: #1a1a1a;
-  border: none;
-  height: 1px;
-  margin: 1em 0;
-}
-table {
-  margin: 1em 0;
-  border-collapse: collapse;
-  width: 100%;
-  overflow-x: auto;
-  display: block;
-  font-variant-numeric: lining-nums tabular-nums;
-}
-table caption {
-  margin-bottom: 0.75em;
-}
-tbody {
-  margin-top: 0.5em;
-  border-top: 1px solid #1a1a1a;
-  border-bottom: 1px solid #1a1a1a;
-}
-th {
-  border-top: 1px solid #1a1a1a;
-  padding: 0.25em 0.5em 0.25em 0.5em;
-}
-td {
-  padding: 0.125em 0.5em 0.25em 0.5em;
-}
-header {
-  margin-bottom: 4em;
-  text-align: center;
-}
-#TOC li {
-  list-style: none;
-}
-#TOC ul {
-  padding-left: 1.3em;
-}
-#TOC > ul {
-  padding-left: 0;
-}
-#TOC a:not(:hover) {
-  text-decoration: none;
-}
-code{white-space: pre-wrap;}
-span.smallcaps{font-variant: small-caps;}
-span.underline{text-decoration: underline;}
-div.column{display: inline-block; vertical-align: top; width: 50%;}
-div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-ul.task-list{list-style: none;}
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-.display.math{display: block; text-align: center; margin: 0.5rem auto;}
-</style>
   </head>
   <body>
-<h1 id="tocbase">Tocbase</h1>
-<p><a href="https://bundlephobia.com/package/tocbase" target="_blank"><img src="https://img.shields.io/bundlephobia/minzip/tocbase?color=green" alt="Minimized and gzipped size"></a></p>
-<p>An exciting to way to build table of contents in Browser.</p>
-<p id="toc">
-</p>
-<h2 id="main-features">Main features</h2>
-<ul>
-<li>Support for anchors and numbering.</li>
-<li>Global and local configuration.</li>
-<li>No CSS styles.</li>
-<li>Extendable through plugins.</li>
-<li>Less than 1.5 kb (minimized + gzipped).</li>
-</ul>
-<h2 id="usage">Usage</h2>
-<p>Installing</p>
-<div class="sourceCode" id="cb1"><pre
-class="sourceCode html"><code class="sourceCode html"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;script&gt;</span><span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">&#39;dd&#39;</span>)<span class="kw">&lt;/script&gt;</span></span></code></pre></div>
-<p>some js</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (<span class="kw">let</span> i <span class="op">=</span> <span class="dv">0</span> <span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">10</span><span class="op">;</span> i<span class="op">++</span>) <span class="fu">foo</span>()<span class="op">;</span></span></code></pre></div>
-<h3 id="foo">foo</h3>
-<h4 id="bar">bar</h4>
-<h2 id="foo-1">foo</h2>
+    <main>
+      <p id="toc"></p>
+
+      <article>
+        <h1 id="tocbase">Tocbase</h1>
+        <p><a href="https://bundlephobia.com/package/tocbase" target="_blank"><img src="https://img.shields.io/bundlephobia/minzip/tocbase?color=green" alt="Minimized and gzipped size"></a></p>
+        <p>Tocbase is a <strong>t</strong>able <strong>o</strong>f
+        <strong>c</strong>ontents maker that runs in the browser. It's
+        simple, lightweight, and empowering.</p>
+        <p>It's <strong>empowering</strong> because it allows you to
+        extend the functionality and look of the ToC and related things
+        by writing plugins. It's way lot easier than you think.</p>
+        <p>Tocbase itself generates a simple HTML ToC and also helps you
+        add anchors and numbers to headings and nothing else.</p>
+        <p>If you love playing with interaction and styles, you can use
+        it as a solid base to craft your dream table of contents.</p>
+        <h2 id="main-features">Main features</h2>
+        <ul>
+        <li>Support for anchors and numbering.</li>
+        <li>Global and local configuration.</li>
+        <li>Adds no CSS styles and interactions.</li>
+        <li>Extendable through a robust plugin system.</li>
+        <li>Less than 1.3 kb (minimized + gzipped).</li>
+        </ul>
+        <h2 id="installing">Installing</h2>
+        <h3 id="cdn">CDN</h3>
+        <p>You can directly add <code>tocbase</code> to your HTML page
+        with it's CDN link like below:</p>
+        <div class="sourceCode" id="cb1"><pre
+        class="sourceCode html"><code class="sourceCode html"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;script</span> <span class="er">src</span><span class="ot">=</span><span class="st">&quot;https://www.unpkg.com/tocbase@latest/dist/cdn.umd.min.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span></span></code></pre></div>
+        <p>Put the above <code>&lt;script&gt;</code> inside the
+        <code>&lt;head&gt;</code> of your HTML. The above CDN link is
+        for the latest version. If you want a specific version you can
+        specify that in the place of <code>latest</code>.</p>
+        <h3 id="node">Node</h3>
+        <p>If you are using bundler, this option is for you. The command
+        to install <code>tocbase</code> is:</p>
+        <pre><code>npm i tocbase</code></pre>
+        <p>For accessing it you can use both ESM and Common JS
+        style:</p>
+        <div class="sourceCode" id="cb3"><pre
+        class="sourceCode js"><code class="sourceCode javascript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">// ESM</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tocbase <span class="im">from</span> <span class="st">&quot;tocbase&quot;</span><span class="op">;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">// Common JS</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> tocbase <span class="op">=</span> <span class="pp">require</span>(<span class="st">&quot;tocbase&quot;</span>)<span class="op">;</span></span></code></pre></div>
+        <p>Follow your bundler's instructions for generating the output
+        file and then load it in your HTML page through
+        <code>&lt;script&gt;</code> to use it.</p>
+        <h2 id="a-micro-tutorial">A micro tutorial</h2>
+        <p>The goal of this micro tutorial is get you up and running.
+        Let's create a HTML file <code>index.html</code> containing the
+        following:</p>
+        <div class="sourceCode" id="cb4"><pre
+        class="sourceCode html"><code class="sourceCode html"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;!doctype </span>html<span class="dt">&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;html&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">&lt;head&gt;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;meta</span> <span class="er">charset</span><span class="ot">=</span><span class="st">&quot;utf-8&quot;</span><span class="kw">&gt;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;title&gt;</span>Tocbase demo<span class="kw">&lt;/title&gt;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;script</span> <span class="er">src</span><span class="ot">=</span><span class="st">&quot;https://www.unpkg.com/tocbase@latest/dist/cdn.umd.min.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;script</span> <span class="er">defer</span> <span class="er">src</span><span class="ot">=</span><span class="st">&quot;index.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">&lt;/head&gt;</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">&lt;body&gt;</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;h1</span> <span class="er">id</span><span class="ot">=</span><span class="st">&quot;post-title&quot;</span><span class="kw">&gt;</span>My awesome blog post title<span class="kw">&lt;/h1&gt;</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">&lt;!-- this p tag will be considered as the placeholder of our ToC --&gt;</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;p</span> <span class="er">id</span><span class="ot">=</span><span class="st">&quot;toc&quot;</span><span class="kw">&gt;&lt;/p&gt;</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;h2</span> <span class="er">id</span><span class="ot">=</span><span class="st">&quot;introduction&quot;</span><span class="kw">&gt;</span>Introduction<span class="kw">&lt;/h2&gt;</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;h2</span> <span class="er">id</span><span class="ot">=</span><span class="st">&quot;how-to-do-this&quot;</span><span class="kw">&gt;</span>How to do this<span class="kw">&lt;/h2&gt;</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;h3</span> <span class="er">id</span><span class="ot">=</span><span class="st">&quot;some-details&quot;</span><span class="kw">&gt;</span>Some details<span class="kw">&lt;/h3&gt;</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;h2</span> <span class="er">id</span><span class="ot">=</span><span class="st">&quot;wrap-up&quot;</span><span class="kw">&gt;</span>Wrap-up<span class="kw">&lt;/h2&gt;</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">&lt;/body&gt;</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;/html&gt;</span></span></code></pre></div>
+        <p>Now create a <code>index.js</code> in the same folder as your
+        HTML file and add the following code there:</p>
+        <div class="sourceCode" id="cb5"><pre
+        class="sourceCode js"><code class="sourceCode javascript"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tocbase</span>({</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">placeholderID</span><span class="op">:</span> <span class="st">&quot;toc&quot;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code></pre></div>
+        <p>Now if you open the page in the browser you shold see the ToC
+        in the place of the <code>&lt;p&gt;</code> element with an id of
+        <code>toc</code>.</p>
+        <p>But there is a problem. Your post title goes into the ToC,
+        which you don't want to happen, right? Let's fix this by telling
+        <code>tocbase</code> to <strong>always</strong> omit the heading
+        that has the id <code>post-title</code> by adding the
+        <code>omit</code> key like below:</p>
+        <div class="sourceCode" id="cb6"><pre
+        class="sourceCode js"><code class="sourceCode javascript"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tocbase</span>({</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">placeholderID</span><span class="op">:</span> <span class="st">&quot;toc&quot;</span><span class="op">,</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">omit</span><span class="op">:</span> <span class="st">&quot;#post-title&quot;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code></pre></div>
+        <p>Two important thing to note here:</p>
+        <ul>
+        <li>For tocbase to do make the ToC, headings must have ids.
+        However you don't have an automated way make the ids for you,
+        the <code>tocbase</code> plugin
+        <code>tocbase-plugin-auto-id</code> can do this for you in the
+        browser. In the next subsection we will cover it.</li>
+        <li>The <code>omit</code> property contains a CSS selector
+        string.</li>
+        </ul>
+        <h3 id="using-a-plugin">Using a plugin</h3>
+        <p>Let's use a the <a
+        href="https://www.npmjs.com/package/tocbase-plugin-auto-id"><code>tocbase-plugin-auto-id</code></a>
+        create ids for you. For for that load plugin via CDN in your
+        <code>&lt;head&gt;</code>:</p>
+        <div class="sourceCode" id="cb7"><pre
+        class="sourceCode js"><code class="sourceCode javascript"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>script src<span class="op">=</span><span class="st">&quot;https://unpkg.com/tocbase-plugin-auto-id@latest/dist/cdn.umd.min.js&quot;</span><span class="op">&gt;&lt;/</span>script<span class="op">&gt;</span></span></code></pre></div>
+        <p>This script will create a variable <code>autoID</code> to
+        hold the plugin.</p>
+        <p>Now add some id-less headings after "Some details":</p>
+        <div class="sourceCode" id="cb8"><pre
+        class="sourceCode html"><code class="sourceCode html"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;h4&gt;</span>Eney<span class="kw">&lt;/h4&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;h4&gt;</span>Meeny<span class="kw">&lt;/h4&gt;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;h4&gt;</span>Miny<span class="kw">&lt;/h4&gt;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;h4&gt;</span>Moe<span class="kw">&lt;/h4&gt;</span></span></code></pre></div>
+        <p>Now if you refresh the browser it will not work! Because If
+        haven't yet told <code>tocbase</code> to use the plugin. Let's
+        do this by add the plugin like below in our
+        <code>index.js</code> file:</p>
+        <div class="sourceCode" id="cb9"><pre
+        class="sourceCode js"><code class="sourceCode javascript"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tocbase</span>({</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">placeholderID</span><span class="op">:</span> <span class="st">&quot;toc&quot;</span><span class="op">,</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">omit</span><span class="op">:</span> <span class="st">&quot;#post-title&quot;</span><span class="op">,</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">plugins</span><span class="op">:</span> [<span class="fu">autoID</span>()]</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code></pre></div>
+        <p>Now the ToC will appear as expected. When you call a plugin
+        you can pass options to tweak the plugin. For example if you
+        want the ids to be lowercased you can pass the `lowerCase option
+        like below:</p>
+        <div class="sourceCode" id="cb10"><pre
+        class="sourceCode js"><code class="sourceCode javascript"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tocbase</span>({</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">placeholderID</span><span class="op">:</span> <span class="st">&quot;toc&quot;</span><span class="op">,</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">omit</span><span class="op">:</span> <span class="st">&quot;#post-title&quot;</span><span class="op">,</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">plugins</span><span class="op">:</span> [<span class="fu">autoID</span>({ <span class="dt">lowerCase</span><span class="op">:</span> <span class="kw">true</span> })]</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code></pre></div>
+        <p>See the plugins documentation for more info about it.</p>
+        <p>Congratulations! You have finished the micro tutorial. Now
+        you are ready to explore and play around with the rest of this
+        doc. Have fun!</p>
+        <h2 id="api">API</h2>
+        <h3 id="the-tocbase-function">The <code>tocbase</code>
+        function</h3>
+        <p>To create ToC you need to call this function.</p>
+        <p><strong>Note</strong>: This function should not be called
+        more than once, since if you add numberings and anchors, it
+        considers those as the content of the headings and add numbers
+        and anchors again along side them. If you really need to call it
+        multiple times witout messing things out, you can write a plugin
+        for that. If you think anything missing, plugins are the
+        way!</p>
+        <p>You can control your ToC at two levels through global and
+        local configs.</p>
+        <p>If it can make a toc, it always returns the DOM node of the
+        resulted ToC, otherwise it returns <code>undefined</code>.</p>
+        <h3 id="global-config">Global Config</h3>
+        <p>It is the object that you pass to <code>tocbase</code>.
+        Tocbase also works if you don't pass a global config. In this
+        case it will use the default values. The properties of global
+        config are:</p>
+        <h4 id="getfrom"><code>getFrom</code></h4>
+        <p>Type: "String"<br> Default value: "body"</p>
+        <p>This should contain a CSS selector to narrow down in the doc
+        from where you want to grab headings to create the ToC.</p>
+        <h4 id="placeholderid"><code>placeholderID</code></h4>
+        <p>Type: "String"<br> Default value: <code>undefined</code></p>
+        <p>If you don't specify this, <code>tocbase</code> will make the
+        ToC if it got some headings with ids and then will return the
+        resulted DOM node.</p>
+        <h4 id="omit"><code>omit</code></h4>
+        <p>Type: "String"<br> Default value: <code>""</code></p>
+        <p>If you want omit some headings in all the HTML pages where
+        the <code>tocbase</code> global config is used, you can specify
+        them here with a CSS selector.</p>
+        <p><strong>Note</strong>: Empty strings as CSS selecters are not
+        valid. In <code>tocbase</code> they are allowed. It treats them
+        as signals for matching nothing.</p>
+        <h4 id="config"><code>config</code></h4>
+        <p>Type: Object<br> Default: <code>{}</code></p>
+        <p>This is an object to let you control different aspects of the
+        ToC, like add numbers to the ToC items or not, etc. It's
+        property are:</p>
+        <h5 id="wrappertag"><code>wrapperTag</code></h5>
+        <p>Type: String<br> Default: <code>"nav"</code></p>
+        <p>The outer HTML element of the ToC.</p>
+        <h5 id="ulol"><code>ulOl</code></h5>
+        <p>Type: String<br> Default: <code>"ul"</code></p>
+        <p>The element to use for the ToC listing. You can specify
+        <code>"ol"</code> for having <code>&lt;ol&gt;</code> lists for
+        the ToC.</p>
+        <h5 id="tocid"><code>tocId</code></h5>
+        <p>Type: String<br> Default: <code>undefiend</code></p>
+        <p>A string representing the id of the wrapper element.</p>
+        <h5 id="titlehtml"><code>titleHTML</code></h5>
+        <p>Type: String<br> Default: <code>undefiend</code></p>
+        <p>If it exists it creates a <code>&lt;h2&gt;</code> element as
+        the ToC title containing the given text.</p>
+        <h5 id="omit-1"><code>omit</code></h5>
+        <p>Type: String<br> Default: <code>""</code></p>
+        <p>A CSS Selector string. It should match the elements that you
+        want to omit as headings.</p>
+        <p>Note that treats <code>""</code> as value value. It thinks
+        that as not omiting any headings inside the boundary area
+        defined by <code>getFrom</code>.</p>
+        <h5 id="tocnum"><code>tocNum</code></h5>
+        <p>Type: Any value<br> Default: <code>undefined</code></p>
+        <p>If it's truthy value, <code>tocbases</code> uses JavaScript
+        to add numbers to the ToC. If your ToC have multiple depths, it
+        creates nested numbering.</p>
+        <p>You can turn this off by giving it a falsy value.</p>
+        <h5 id="hnum"><code>hNum</code></h5>
+        <p>Type: Any value<br> Default: <code>undefined</code></p>
+        <p>If it's truthy value, <code>tocbases</code> uses JavaScript
+        to add numbers to the start of the headings. If your ToC have
+        multiple depths, it creates nested numbering.</p>
+        <p>You can turn this off by giving it a falsy value.</p>
+        <h5 id="numlocale"><code>numLocale</code></h5>
+        <p>Type: Usually a string<br> Default: <code>"en-US"</code></p>
+        <p>The locale for number. E.g. <code>"bn-u-nu-beng"</code>,
+        <code>"hi-u-nu-deva"</code>, can be used for Bengali and Hindi
+        respectively. It internally uses the JavaScript <a
+        href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat"><code>Intl.NumberFormat</code></a>
+        constructor. So see this if you need help to find out your
+        locale. Not that if your browser doesn't support
+        <code>Intl.NumberFormat</code>, the result is entirely
+        implementation dependent.</p>
+        <h5 id="numsep"><code>numSep</code></h5>
+        <p>Type: String<br> Default: <code>"."</code></p>
+        <p>The separator to use between number elements of ToC that
+        represent different depth levels.</p>
+        <h5 id="numpostfix"><code>numPostfix</code></h5>
+        <p>Type: String<br> Default: <code>""</code></p>
+        <p>It is added to the end of the numberings. For example by
+        default a number may be <code>4.3</code>. Now if you want a dot
+        at the end you could specify that here.</p>
+        <h5 id="anchor"><code>anchor</code></h5>
+        <p>Type: Any value<br> Default: <code>undefined</code></p>
+        <p>If it's a truthy value it creates a anchor element at the
+        heading of a heading pointing to that heading.</p>
+        <h5 id="anchorsymbol"><code>anchorSymbol</code></h5>
+        <p>Type: String<br> Default: <code>""</code></p>
+        <p>The symbol for the anchor.</p>
+        <h5 id="anchordir"><code>anchorDir</code></h5>
+        <p>Type: String<br> Default: <code>"r"</code></p>
+        <p>Determines on which side you want the anchor.
+        <code>"r"</code> is for right. <code>"l"</code> is for left.</p>
+        <h5 id="ctoc"><code>cToc</code></h5>
+        <p>Type: String<br> Default: <code>undefined</code></p>
+        <p>Use it to specify class name(s) for the wrapper ToC
+        element.</p>
+        <h5 id="ch"><code>cH</code></h5>
+        <p>Type: String<br> Default: <code>undefined</code></p>
+        <p>Use it to append class name(s) to all the headings that
+        <code>tocbase</code> uses for generating the ToC.</p>
+        <h5 id="ctitle"><code>cTitle</code></h5>
+        <p>Type: String<br> Default: <code>undefined</code></p>
+        <p>Use it to specify class name(s) for the toc title
+        element(<code>&lt;h2&gt;</code>).</p>
+        <h5 id="ctocnum"><code>cTocNum</code></h5>
+        <p>Type: String<br> Default: <code>undefined</code></p>
+        <p>Use it to specify class name(s) for the toc numbers
+        elements(<code>&lt;span&gt;s</code>).</p>
+        <h5 id="chnum"><code>cHNum</code></h5>
+        <p>Type: String<br> Default: <code>undefined</code></p>
+        <p>Use it to specify class name(s) for the heading numbers
+        elements(<code>&lt;span&gt;s</code>).</p>
+        <h5 id="ctocanchor"><code>cTocAnchor</code></h5>
+        <p>Type: String<br> Default: <code>undefined</code></p>
+        <p>Use it to specify class name(s) for the ToC
+        anchor(<code>&lt;a&gt;</code>) elements.</p>
+        <h5 id="chanchor"><code>cHAnchor</code></h5>
+        <p>Type: String<br> Default: <code>undefined</code></p>
+        <p>Use it to specify class name(s) for the heading
+        anchor(<code>&lt;a&gt;</code>) elements.</p>
+        <h5 id="crootulol"><code>cRootUlOl</code></h5>
+        <p>Type: String<br> Default: <code>undefined</code></p>
+        <p>Use it to specify class name(s) for the root
+        <code>&lt;ul&gt;</code> or <code>&lt;ol&gt;</code> element of
+        the ToC.</p>
+        <h5 id="culol"><code>cUlOl</code></h5>
+        <p>Type: String<br> Default: <code>undefined</code></p>
+        <p>If <code>config.tocNum</code> is a falsy value, this property
+        adds class name(s) to the ToC's each <code>&lt;ul&gt;</code> or
+        <code>&lt;ol&gt;</code> elements.</p>
+        <h5 id="cnumulol"><code>cNumUlOl</code></h5>
+        <p>Type: String<br> Default: <code>undefined</code></p>
+        <p>If <code>config.tocNum</code> is a truthy value, this
+        property adds class name(s) to the ToC's each
+        <code>&lt;ul&gt;</code> or <code>&lt;ol&gt;</code> elements.</p>
+        <h5 id="cli"><code>cLi</code></h5>
+        <p>Type: String<br> Default: <code>undefined</code></p>
+        <p>Use it to specify class name(s) for the ToC
+        <code>&lt;li&gt;</code> elements.</p>
+        <h3 id="local-config">Local Config</h3>
+        <p>You can override the properties of the <code>config</code>
+        object of global config through local config.</p>
+        <p>To write the local config you will need to pass that as a
+        JSON object as the content of the placeholder element. Below is
+        an exmaple:</p>
+        <div class="sourceCode" id="cb11"><pre
+        class="sourceCode html"><code class="sourceCode html"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;p</span> <span class="er">id</span><span class="ot">=</span><span class="st">&quot;mytoc&quot;</span><span class="kw">&gt;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  &quot;tocNum&quot;: 1,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  &quot;hNum&quot;: 0</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;/p&gt;</span></span></code></pre></div>
+        <p>Because it is JSON object you will need to write qoutes
+        around the property names.</p>
+        <p>Two things to keep in mind:</p>
+        <ul>
+        <li>You can use any HTML element as the placholder element of
+        your ToC as long as it allows you to write someting inside it
+        and get that with it's <code>textContent</code> property.</li>
+        <li>Because you are writing JSON as HTML string, if you want to
+        include some HTML reserved characters like <code>&lt;</code> or
+        <code>&amp;</code> you will need use HTML entities for
+        those.</li>
+        </ul>
+        <h2 id="plugin-development-guide">Plugin development Guide</h2>
+        <p>Coming Soon!</p>
+      </article>
+    </main>
+
     <footer>
       <p>This document was last modified on August 31, 2022</p>
     </footer>
