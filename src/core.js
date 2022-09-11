@@ -1,6 +1,6 @@
 import { elt, hasKey } from './util.js';
 
-export const nodeBag = {ulOl:[], li:[], ta: [], ha: [], tn: [], hn: []};
+export const nodeBag = {list:[], li:[], ta: [], ha: [], tn: [], hn: []};
 
 export function createTocCore(headings, config = {}, firstTime = true, nums = []) {
   // just a optimized way to check if the array is empty
@@ -12,7 +12,7 @@ export function createTocCore(headings, config = {}, firstTime = true, nums = []
     config.cUlOl && ulOl.classList.add(config.cUlOl);
   else config.cNumUlOl && ulOl.classList.add(config.cNumUlOl);
 
-  nodeBag.ulOl.push(ulOl);
+  nodeBag.list.push(ulOl);
 
   nums.push(1);
 

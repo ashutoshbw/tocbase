@@ -7,6 +7,17 @@ export function elt(type, id, className) {
   return id ? node.id = id : className && (node.className = className), node;
 }
 
+const isObj = o => !Array.isArray(o) && typeof o == 'object';
+export function deepMerge(t, ...sources) {
+  sources.forEach(s => {
+    for (let k in s) {
+      (!isObj(s[k])) ? t[k] = s[k] :
+      isObj(t[k]) ? deepMerge(t[k], s[k]) : t[k] = s[k]
+    }
+  })
+  return t;
+}
+
 export function getHeadings(getFrom = "body", globalOmit = "", omit = "") {
   const headings = $$("h1,h2,h3,h4,h5,h6", $(getFrom)),
         e1 = globalOmit.trim(), 
@@ -18,30 +29,27 @@ export function getHeadings(getFrom = "body", globalOmit = "", omit = "") {
 }
 
 
-function getValueInternal(bag, pluginName, config, valueName, defaultValue) {
-  const p = bag.config.plugins[pluginName];
-  const value = p[valueName] || config[valueName] || defaultValue;
-  p[valueName] = value;
+const resolveInputInternal = (bag, pluginName, config, valueName, defaultValue) => {
+  const pc = bag.plugins[pluginName];
+  const value = bag.plugins[pluginName][valueName] || config[valueName] || defaultValue;
+  pc[valueName] = value;
   return value;
 }
 
-function processPlugin(plugin) {
-  return ({
-    setup(bag) {
-      const c = bag.config;
-      if (!c.plugins) c.plugins = {};
-      c.plugins[plugin.name] = Object.assign({}, c.plugins[plugin.name]);
+const processPlugin = plugin => ({
+  setup(bag) {
+    const {name, config} = plugin;
+    const resolveInput = (valueName, defaultValue) => resolveInputInternal(bag, name, config, valueName, defaultValue);
 
-      const getValue = (valueName, defaultValue) => getValueInternal(bag, plugin.name, plugin.config, valueName, defaultValue);
-      plugin.setup(bag, getValue, plugin.config);
-      return bag;
-    }
-  });
-}
+    bag.plugins[name] = Object.assign({}, bag.plugins[name]);
 
-//export const setupPlugins = (plugins, bag) => plugins.reduce((acc, p) => p.setup(acc), bag);
-export const setupPlugins = (plugins, bag) => plugins.reduce((acc, p) => {
-  return processPlugin(p).setup(acc); 
-}, bag);
+    plugin.setup(bag, resolveInput, config);
+
+    bag.plugins.__applied.push(plugin);
+    return bag;
+  }
+});
+
+export const setupPlugins = (plugins, bag) => plugins.reduce((acc, p) => processPlugin(p).setup(acc), bag);
 
 export const createPlugin = (name, setup) => (config = {}) => ({ name, config, setup });
