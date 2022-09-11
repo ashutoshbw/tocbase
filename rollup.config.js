@@ -26,7 +26,7 @@ export default [
       file: `./dist/cdn.umd.min.js`,
       format: 'umd',
       name: "tocbase",
-      exports: "default",
+      exports: "named",
       plugins: [terser(terserConfig)],
     },
   },
@@ -37,12 +37,12 @@ export default [
       {
         file: `./dist/index.js`,
         format: "es",
-        exports: "default",
+        exports: "named",
       },
       {
         file: `./dist/index.cjs`,
         format: "cjs",
-        exports: "default",
+        exports: "named",
       },
     ],
   }

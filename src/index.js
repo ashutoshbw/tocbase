@@ -1,12 +1,13 @@
-import { $, $$, elt, hasKey, getHeadings, setupPlugins } from './util.js';
-import { createToc, nodeBag } from './create-toc.js';
+import { $, $$, elt, hasKey, getHeadings, createPlugin, setupPlugins } from './util.js';
+import { createTocCore, nodeBag } from './core.js';
 
-export default function tocbase(g = {}) {
+function createToc(g = {}) {
   const bag = {
     setupPlugins,
     $, $$, elt, hasKey,
-    ...nodeBag
-  }
+    ...nodeBag,
+    options: {}  // for holding plugin options and accessing them from any plugins
+  };
 
   let placeholderElt;
   if (hasKey(g, "placeholderID")) placeholderElt = $("#" + g.placeholderID);
@@ -22,9 +23,11 @@ export default function tocbase(g = {}) {
     pluginSliceIndex = 1;
   }
 
-  if (!(bag.toc = createToc(bag.hArray, bag.config))) return;
+  if (!(bag.toc = createTocCore(bag.hArray, bag.config))) return;
 
   placeholderElt?.replaceWith(bag.toc);
 
   return setupPlugins((g.plugins || []).slice(pluginSliceIndex), bag).toc;
 }
+
+export { createToc, createPlugin };

@@ -17,5 +17,31 @@ export function getHeadings(getFrom = "body", globalOmit = "", omit = "") {
   return headings.filter(h => h.matches(`:not(${e1}${e1 && e2 ? ',' : ''}${e2})`));
 }
 
-export const setupPlugins = (plugins, bag) => plugins.reduce((acc, p) => p.setup(acc), bag);
 
+function getValueInternal(bag, pluginName, config, valueName, defaultValue) {
+  const p = bag.config.plugins[pluginName];
+  const value = p[valueName] || config[valueName] || defaultValue;
+  p[valueName] = value;
+  return value;
+}
+
+function processPlugin(plugin) {
+  return ({
+    setup(bag) {
+      const c = bag.config;
+      if (!c.plugins) c.plugins = {};
+      c.plugins[plugin.name] = Object.assign({}, c.plugins[plugin.name]);
+
+      const getValue = (valueName, defaultValue) => getValueInternal(bag, plugin.name, plugin.config, valueName, defaultValue);
+      plugin.setup(bag, getValue, plugin.config);
+      return bag;
+    }
+  });
+}
+
+//export const setupPlugins = (plugins, bag) => plugins.reduce((acc, p) => p.setup(acc), bag);
+export const setupPlugins = (plugins, bag) => plugins.reduce((acc, p) => {
+  return processPlugin(p).setup(acc); 
+}, bag);
+
+export const createPlugin = (name, setup) => (config = {}) => ({ name, config, setup });
