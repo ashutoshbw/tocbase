@@ -1,4 +1,4 @@
-import { elt, hasKey } from './util.js';
+import { TB, elt, hasKey } from './util.js';
 
 export const nodeBag = {list:[], li:[], ta: [], ha: [], tn: [], hn: []};
 
@@ -6,18 +6,16 @@ export function createTocCore(headings, resolveInput, firstTime = true, nums = [
   // just a optimized way to check if the array is empty
   if (!headings[0]) return;
 
-  const TB = "tocbase";
-
   // the ip at the start of variable names means it is input
-  const ipWrapperElt    = resolveInput("wrapperElt",   "nav");
-  const ipTitleText     = resolveInput("titleText",    "Table of Contents");
-  const ipTocId         = resolveInput("tocId",        `${TB}-toc`);
-  const ipListType      = resolveInput("listType",     "ul");
-  const ipNumLocale     = resolveInput("numLocale",    "en-US");
-  const ipNumSep        = resolveInput("numSep",       ".");
-  const ipNumPostfix    = resolveInput("numPostfix",   "");
-  const ipAnchorSymbol  = resolveInput("anchorSymbol", "#");
-  const ipAnchorDir     = resolveInput("anchorDir",    "r");
+  const ipWrapperElt    = resolveInput("wrapperElt",    "nav");
+  const ipTitleText     = resolveInput("titleText",     "Table of Contents");
+  const ipTocId         = resolveInput("tocId",         `${TB}-toc`);
+  const ipListType      = resolveInput("listType",      "ul");
+  const ipNumLocale     = resolveInput("numLocale",     "en-US");
+  const ipNumSep        = resolveInput("numSep",        ".");
+  const ipNumPostfix    = resolveInput("numPostfix",    "");
+  const ipAnchorSymbol  = resolveInput("anchorSymbol",  "#");
+  const ipAnchorDir     = resolveInput("anchorDir",     "r");
 
   const ipBTocNum = resolveInput("bTocNum", 0);
   const ipBHNum   = resolveInput("bHNum"  , 0);

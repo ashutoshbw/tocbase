@@ -1,3 +1,5 @@
+export const TB = "tocbase";
+
 export const $ = (s, n) => (n || document).querySelector(s);
 export const $$ = (s, n) => [...(n || document).querySelectorAll(s)];
 export const hasKey = (o, k) => o.hasOwnProperty(k);

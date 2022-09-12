@@ -1,4 +1,4 @@
-import { $, $$, hasKey, elt, deepMerge, getHeadings, createPlugin, setupPlugins, resolveTocbaseInputInternal } from './util.js';
+import { TB, $, $$, hasKey, elt, deepMerge, getHeadings, createPlugin, setupPlugins, resolveTocbaseInputInternal } from './util.js';
 import { createTocCore, nodeBag } from './core.js';
 
 function createToc(g = {}) {
@@ -9,13 +9,14 @@ function createToc(g = {}) {
     plugins: {__applied: []},
   };
 
+  const resolveInput = (valueName, defaultValue) => resolveTocbaseInputInternal(bag, valueName, defaultValue);
+
   // Add a style tag for tocbase and it's plugins
   bag.style = elt('style');
   bag.addCSS = css => bag.style.innerHTML += css;
   document.head.prepend(bag.style);
 
-  let placeholderElt;
-  if (hasKey(g, "placeholderId")) placeholderElt = $("#" + g.placeholderId);
+  const placeholderElt = document.getElementById(g.placeholderId);
 
   const plugins = g.plugins;
   delete g.plugins;
@@ -32,9 +33,19 @@ function createToc(g = {}) {
     pluginSliceIndex = 1;
   }
 
-  const resolveInput = (valueName, defaultValue) => resolveTocbaseInputInternal(bag, valueName, defaultValue);
-
   if (!(bag.toc = createTocCore(bag.hArray, resolveInput))) return;
+
+  bag.addCSS(`
+    .${bag.cNumList} {
+      list-style-type: none;
+    }
+    .${bag.cTocNum} {
+      margin-right: 0.2rem;
+    }
+    .${bag.cHAnchor} {
+      margin-${bag.anchorDir == "r" ? "left" : "right"}: 0.2rem;
+    }
+  `);
 
   placeholderElt?.replaceWith(bag.toc);
 
