@@ -28,8 +28,14 @@ export function getHeadings(getFrom = "body", globalOmit = "", omit = "") {
   return headings.filter(h => h.matches(`:not(${e1}${e1 && e2 ? ',' : ''}${e2})`));
 }
 
+// For resolving input in tocbase core
+export const resolveTocbaseInputInternal = (bag, valueName, defaultValue) => {
+  bag[valueName] = bag[valueName] || defaultValue;
+  return bag[valueName];
+}
 
-const resolveInputInternal = (bag, pluginName, config, valueName, defaultValue) => {
+// For resolving input in plugins
+const resolvePluginInputInternal = (bag, pluginName, config, valueName, defaultValue) => {
   const pc = bag.plugins[pluginName];
   const value = bag.plugins[pluginName][valueName] || config[valueName] || defaultValue;
   pc[valueName] = value;
@@ -41,7 +47,7 @@ const processPlugin = plugin => ({
     const {name, config} = plugin;
     if (bag.plugins.__applied.some(p => p.name === name)) throw new Error(`"${name}" Plugin is called multiple times.`);
 
-    const resolveInput = (valueName, defaultValue) => resolveInputInternal(bag, name, config, valueName, defaultValue);
+    const resolveInput = (valueName, defaultValue) => resolvePluginInputInternal(bag, name, config, valueName, defaultValue);
 
     bag.plugins[name] = Object.assign({}, bag.plugins[name]);
 

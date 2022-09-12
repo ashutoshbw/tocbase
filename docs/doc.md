@@ -184,13 +184,13 @@ Default: `{}`
 
 This is an object to let you control different aspects of the ToC, like add numbers to the ToC items or not, etc. It's property are:
 
-##### `wrapperTag`
+##### `wrapperElt`
 Type: String<br>
 Default: `"nav"`
 
 The outer HTML element of the ToC.
 
-##### `ulOl`
+##### `listType`
 Type: String<br>
 Default: `"ul"`
 
@@ -216,7 +216,7 @@ A CSS Selector string. It should match the elements that you want to omit as hea
 
 Note that treats `""` as value value. It thinks that as not omiting any headings inside the boundary area defined by `getFrom`.
 
-##### `tocNum`
+##### `bTocNum`
 Type: Any value<br>
 Default: `undefined`
 
@@ -224,7 +224,7 @@ If it's truthy value, `tocbases` uses JavaScript to add numbers to the ToC. If y
 
 You can turn this off by giving it a falsy value.
 
-##### `hNum`
+##### `bHNum`
 Type: Any value<br>
 Default: `undefined`
 
@@ -250,7 +250,7 @@ Default: `""`
 
 It is added to the end of the numberings. For example by default a number may be `4.3`. Now if you want a dot at the end you could specify that here.
 
-##### `anchor`
+##### `bAnchor`
 Type: Any value<br>
 Default: `undefined`
 
@@ -310,23 +310,23 @@ Default: `undefined`
 
 Use it to specify class name(s) for the heading anchor(`<a>`) elements.
 
-##### `cRootUlOl`
+##### `cRootList`
 Type: String<br>
 Default: `undefined`
 
 Use it to specify class name(s) for the root `<ul>` or `<ol>` element of the ToC.
 
-##### `cUlOl`
+##### `cList`
 Type: String<br>
 Default: `undefined`
 
-If `config.tocNum` is a falsy value, this property adds class name(s) to the ToC's each `<ul>` or `<ol>` elements.
+If `config.bTocNum` is a falsy value, this property adds class name(s) to the ToC's each `<ul>` or `<ol>` elements.
 
-##### `cNumUlOl`
+##### `cNumList`
 Type: String<br>
 Default: `undefined`
 
-If `config.tocNum` is a truthy value, this property adds class name(s) to the ToC's each `<ul>` or `<ol>` elements.
+If `config.bTocNum` is a truthy value, this property adds class name(s) to the ToC's each `<ul>` or `<ol>` elements.
 
 ##### `cLi`
 Type: String<br>
@@ -343,7 +343,7 @@ To write the local config you will need to pass that as a JSON object as the con
 ```html
 <p id="mytoc">
 {
-  "tocNum": 1,
+  "bTocNum": 1,
   "hNum": 0
 }
 </p>

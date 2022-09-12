@@ -2,17 +2,45 @@ import { elt, hasKey } from './util.js';
 
 export const nodeBag = {list:[], li:[], ta: [], ha: [], tn: [], hn: []};
 
-export function createTocCore(headings, config = {}, firstTime = true, nums = []) {
+export function createTocCore(headings, resolveInputs, firstTime = true, nums = []) {
   // just a optimized way to check if the array is empty
   if (!headings[0]) return;
 
-  const ulOl = elt(config.ulOl || "ul", null, firstTime && config.cRootUlOl);
+  const TB = "tocbase";
 
-  if (!config.tocNum)
-    config.cUlOl && ulOl.classList.add(config.cUlOl);
-  else config.cNumUlOl && ulOl.classList.add(config.cNumUlOl);
+  const input = resolveInputs({
+    wrapperElt:   "nav",
+    titleText:    "Table",
+    tocId:        `${TB}-toc`,
+    listType:     "ul",
+    numLocale:    "en-US",
+    numSep:       ".",
+    numPostfix:   "",
+    anchorSymbol: "#",
+    anchorDir:    "r",
 
-  nodeBag.list.push(ulOl);
+    bTocNum: 0,
+    bHNum:   0,
+    bAnchor: 0,
+
+    cToc:       `${TB}-toc`,
+    cTitle:     `${TB}-title`,
+    cRootList:  `${TB}-root-list`,
+    cList:      `${TB}-list`,
+    cLi:        `${TB}-li`,
+    cNumList:   `${TB}-num-list`,
+    cH:         `${TB}-h`,
+    cTocNum:    `${TB}-toc-num`,
+    cHNum:      `${TB}-h-num`,
+    cTocAnchor: `${TB}-toc-a`,
+    cHAnchor:   `${TB}-h-a`,
+  });
+
+  const listElt = elt(input.listType, null, firstTime && input.cRootList);
+
+  listElt.classList.add(input.bTocNum ? input.cNumList: input.cList);
+
+  nodeBag.list.push(listElt);
 
   nums.push(1);
 
@@ -20,17 +48,17 @@ export function createTocCore(headings, config = {}, firstTime = true, nums = []
     const h = headings[i]; 
     if (!h.id) throw new Error(`Headings must have ids.`); 
 
-    hasKey(config, "cH") && h.classList.add(config.cH);
+    h.classList.add(input.cH);
 
     const getDepthNumSpan = className => {
       const span = elt("span", null, className);
       span.append(nums
-        .map(n => n.toLocaleString(config.numLocale || "en-US", {useGrouping: false}))
-        .join(hasKey(config, "numSep") ? config.numSep : '.') + (config.numPostfix || ''));
+        .map(n => n.toLocaleString(input.numLocale || "en-US", {useGrouping: false}))
+        .join(input.numSep) + (input.numPostfix));
       return span;
     };
 
-    const li = elt("li", null, config.cLi);
+    const li = elt("li", null, input.cLi);
     nodeBag.li.push(li);
 
     const getAnchorHTML = (hID, className, innerHTML, textContent) => {
@@ -41,28 +69,27 @@ export function createTocCore(headings, config = {}, firstTime = true, nums = []
       return a;
     };
 
-    const tocAnchor = getAnchorHTML(h.id, config.cTocAnchor, h.innerHTML);
+    const tocAnchor = getAnchorHTML(h.id, input.cTocAnchor, h.innerHTML);
     li.append(tocAnchor);
     nodeBag.ta.push(tocAnchor);
 
-    if (config.tocNum) { 
-      const tocNumSpan = getDepthNumSpan(config.cTocNum);
+    if (input.bTocNum) { 
+      const tocNumSpan = getDepthNumSpan(input.cTocNum);
       li.prepend(tocNumSpan);
       nodeBag.tn.push(tocNumSpan);
     }
 
-    const headingNumSpan = getDepthNumSpan(config.cHNum);
+    const headingNumSpan = getDepthNumSpan(input.cHNum);
 
-    if (config.hNum) {
+    if (input.bHNum) {
       h.prepend(headingNumSpan);
       nodeBag.hn.push(headingNumSpan);
     }
 
-    if (config.anchor) {
-      const headingAnchor = getAnchorHTML(h.id, config.cHAnchor, 0, config.anchorSymbol),
-            dir = config.anchorDir = config.anchorDir == "l" ? "l" : "r";
+    if (input.bAnchor) {
+      const headingAnchor = getAnchorHTML(h.id, input.cHAnchor, 0, input.anchorSymbol);
 
-      if (dir == "l") h.prepend(headingAnchor);
+      if (input.anchorDir == "l") h.prepend(headingAnchor);
       else h.append(headingAnchor);
 
       nodeBag.ha.push(headingAnchor);
@@ -77,10 +104,10 @@ export function createTocCore(headings, config = {}, firstTime = true, nums = []
     /* ------ Subheading generation end -------*/
 
     if (subHeadings.length > 0) {
-      li.append(createTocCore(subHeadings, config, false, nums));
+      li.append(createTocCore(subHeadings, resolveInputs, false, nums));
     } 
 
-    ulOl.append(li);
+    listElt.append(li);
 
     ++nums[nums.length - 1];
     i = i + subHeadings.length;
@@ -89,18 +116,16 @@ export function createTocCore(headings, config = {}, firstTime = true, nums = []
   nums.pop();
 
   if (firstTime) {
-    const toc = elt(config.wrapperTag || 'nav', config.tocId, config.cToc);
+    const toc = elt(input.wrapperElt || 'nav', input.tocId, input.cToc);
 
-    if (config.titleText?.trim()) {
-      const title = elt("h2", null, config.cTitle); 
-      title.textContent = config.titleText;
-      nodeBag.titleText = title;
-      toc.append(title);
-    }
+    const title = elt("h2", null, input.cTitle); 
+    title.textContent = input.titleText;
+    nodeBag.title = title;
+    toc.append(title);
 
-    toc.append(ulOl);
+    toc.append(listElt);
 
     return toc;
   } 
-  return ulOl;
+  return listElt;
 }

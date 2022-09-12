@@ -1,4 +1,4 @@
-import { $, $$, hasKey, elt, deepMerge, getHeadings, createPlugin, setupPlugins } from './util.js';
+import { $, $$, hasKey, elt, deepMerge, getHeadings, createPlugin, setupPlugins, resolveTocbaseInputInternal } from './util.js';
 import { createTocCore, nodeBag } from './core.js';
 
 function createToc(g = {}) {
@@ -32,7 +32,12 @@ function createToc(g = {}) {
     pluginSliceIndex = 1;
   }
 
-  if (!(bag.toc = createTocCore(bag.hArray, bag))) return;
+  const resolveInputs = defaultValues => Object.entries(defaultValues).reduce((a, e) => {
+    a[e[0]] = resolveTocbaseInputInternal(bag, e[0], e[1])
+    return a;
+  }, {});
+
+  if (!(bag.toc = createTocCore(bag.hArray, resolveInputs))) return;
 
   placeholderElt?.replaceWith(bag.toc);
 
