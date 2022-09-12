@@ -39,6 +39,8 @@ const resolveInputInternal = (bag, pluginName, config, valueName, defaultValue) 
 const processPlugin = plugin => ({
   setup(bag) {
     const {name, config} = plugin;
+    if (bag.plugins.__applied.some(p => p.name === name)) throw new Error(`"${name}" Plugin is called multiple times.`);
+
     const resolveInput = (valueName, defaultValue) => resolveInputInternal(bag, name, config, valueName, defaultValue);
 
     bag.plugins[name] = Object.assign({}, bag.plugins[name]);

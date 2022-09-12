@@ -351,6 +351,9 @@ Two things to keep in mind:
 ## Plugin development Guide
 Coming Soon!
 
+- A plugin is not allowed to be applied multiple times.
+- Each plugin in an app should have unique names. In rare cases if you have came accross two different plugins with same name, you have to manually rename it first to use it.
+
 
 ## Changes made
 - `glocalOmit`
