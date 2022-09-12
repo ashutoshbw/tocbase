@@ -9,8 +9,13 @@ function createToc(g = {}) {
     plugins: {__applied: []},
   };
 
+  // Add a style tag for tocbase and it's plugins
+  bag.style = elt('style');
+  bag.addCSS = css => bag.style.innerHTML += css;
+  document.head.prepend(bag.style);
+
   let placeholderElt;
-  if (hasKey(g, "placeholderID")) placeholderElt = $("#" + g.placeholderID);
+  if (hasKey(g, "placeholderId")) placeholderElt = $("#" + g.placeholderId);
 
   const plugins = g.plugins;
   delete g.plugins;

@@ -18,9 +18,17 @@ If you love playing with interaction and styles, you can use it as a solid base 
 
 - Support for anchors and numbering.
 - Global and local configuration.
-- Adds no CSS styles and interactions.
 - Extendable through a robust plugin system.
 - Less than 1.3 kb (minimized + gzipped).
+
+## A note on Styling
+All the styling is done through JS.
+
+`tocbase` creates a new style element and inserts it to the top of the heading. `tocbase` itself and all of it's plugins should use this style sheet for doing anything with CSS. 
+
+`tocbase` and it's plugins frequently adds and uses CSS class for style. By default these class haves starts with the `tb-` prefix. Such has `tb-toc-num` default class name the span number elements of the toc. 
+
+In a HTML page the the tocbase stylesheet comes before any other stylesheets. This allows one to customize the class from other stylesheets if one wants.
 
 ## Installing
 
@@ -79,7 +87,7 @@ The goal of this micro tutorial is get you up and running. Let's create a HTML f
 Now create a `index.js` in the same folder as your HTML file and add the following code there:
 ```js
 tocbase({
-  placeholderID: "toc"
+  placeholderId: "toc"
 });
 ```
 
@@ -89,7 +97,7 @@ But there is a problem. Your post title goes into the ToC, which you don't want 
 
 ```js
 tocbase({
-  placeholderID: "toc",
+  placeholderId: "toc",
   omit: "#post-title"
 });
 ```
@@ -118,7 +126,7 @@ Now add some id-less headings after "Some details":
 Now if you refresh the browser it will not work! Because If haven't yet told `tocbase` to use the plugin. Let's do this by add the plugin like below in our `index.js` file:
 ```js
 tocbase({
-  placeholderID: "toc",
+  placeholderId: "toc",
   omit: "#post-title",
   plugins: [autoID()]
 });
@@ -127,7 +135,7 @@ tocbase({
 Now the ToC will appear as expected. When you call a plugin you can pass options to tweak the plugin. For example if you want the ids to be lowercased you can pass the `lowerCase option like below:
 ```js
 tocbase({
-  placeholderID: "toc",
+  placeholderId: "toc",
   omit: "#post-title",
   plugins: [autoID({ lowerCase: true })]
 });
@@ -156,7 +164,7 @@ Default value: "body"
 
 This should contain a CSS selector to narrow down in the doc from where you want to grab headings to create the ToC.
 
-#### `placeholderID`
+#### `placeholderId`
 Type: "String"<br>
 Default value: `undefined`
 
@@ -349,13 +357,21 @@ Two things to keep in mind:
 - Because you are writing JSON as HTML string, if you want to include some HTML reserved characters like `<` or `&` you will need use HTML entities for those.
 
 ## Plugin development Guide
+When developing a pluging you should document where this plugin should come in the `plugins` array. That is
+- What this plugin expects from the DOM and the internal `bag` variable.
+
 Coming Soon!
 
 - A plugin is not allowed to be applied multiple times.
 - Each plugin in an app should have unique names. In rare cases if you have came accross two different plugins with same name, you have to manually rename it first to use it.
 
+Plugin falls into two categories:
+- Pre Plugin: like `auto-id`: You can use them to do some modification to dom to make it ready for tobase to use it.
+- Post Plugins: like `foldable`: A plugin with a specific feature.
+
+Note if there are two plugins for the same purpose and you use them both, the result will most likely be a mess.
+
 
 ## Changes made
 - `glocalOmit`
-- `placeholderId` (Still in todo)
 
