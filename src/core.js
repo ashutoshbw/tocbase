@@ -2,43 +2,42 @@ import { elt, hasKey } from './util.js';
 
 export const nodeBag = {list:[], li:[], ta: [], ha: [], tn: [], hn: []};
 
-export function createTocCore(headings, resolveInputs, firstTime = true, nums = []) {
+export function createTocCore(headings, resolveInput, firstTime = true, nums = []) {
   // just a optimized way to check if the array is empty
   if (!headings[0]) return;
 
   const TB = "tocbase";
 
-  const input = resolveInputs({
-    wrapperElt:   "nav",
-    titleText:    "Table",
-    tocId:        `${TB}-toc`,
-    listType:     "ul",
-    numLocale:    "en-US",
-    numSep:       ".",
-    numPostfix:   "",
-    anchorSymbol: "#",
-    anchorDir:    "r",
+  // the ip at the start of variable names means it is input
+  const ipWrapperElt    = resolveInput("wrapperElt",   "nav");
+  const ipTitleText     = resolveInput("titleText",    "Table of Contents");
+  const ipTocId         = resolveInput("tocId",        `${TB}-toc`);
+  const ipListType      = resolveInput("listType",     "ul");
+  const ipNumLocale     = resolveInput("numLocale",    "en-US");
+  const ipNumSep        = resolveInput("numSep",       ".");
+  const ipNumPostfix    = resolveInput("numPostfix",   "");
+  const ipAnchorSymbol  = resolveInput("anchorSymbol", "#");
+  const ipAnchorDir     = resolveInput("anchorDir",    "r");
 
-    bTocNum: 0,
-    bHNum:   0,
-    bAnchor: 0,
+  const ipBTocNum = resolveInput("bTocNum", 0);
+  const ipBHNum   = resolveInput("bHNum"  , 0);
+  const ipBAnchor = resolveInput("bAnchor", 0);
 
-    cToc:       `${TB}-toc`,
-    cTitle:     `${TB}-title`,
-    cRootList:  `${TB}-root-list`,
-    cList:      `${TB}-list`,
-    cLi:        `${TB}-li`,
-    cNumList:   `${TB}-num-list`,
-    cH:         `${TB}-h`,
-    cTocNum:    `${TB}-toc-num`,
-    cHNum:      `${TB}-h-num`,
-    cTocAnchor: `${TB}-toc-a`,
-    cHAnchor:   `${TB}-h-a`,
-  });
+  const ipCToc       = resolveInput("cToc",       `${TB}-toc`);
+  const ipCTitle     = resolveInput("cTitle",     `${TB}-title`);
+  const ipCRootList  = resolveInput("cRootList",  `${TB}-root-list`);
+  const ipCList      = resolveInput("cList",      `${TB}-list`);
+  const ipCLi        = resolveInput("cLi",        `${TB}-li`);
+  const ipCNumList   = resolveInput("cNumList",   `${TB}-num-list`);
+  const ipCH         = resolveInput("cH",         `${TB}-h`);
+  const ipCTocNum    = resolveInput("cTocNum",    `${TB}-toc-num`);
+  const ipCHNum      = resolveInput("cHNum",      `${TB}-h-num`);
+  const ipCTocAnchor = resolveInput("cTocAnchor", `${TB}-toc-a`);
+  const ipCHAnchor   = resolveInput("cHAnchor",   `${TB}-h-a`);
 
-  const listElt = elt(input.listType, null, firstTime && input.cRootList);
+  const listElt = elt(ipListType, null, firstTime && ipCRootList);
 
-  listElt.classList.add(input.bTocNum ? input.cNumList: input.cList);
+  listElt.classList.add(ipBTocNum ? ipCNumList: ipCList);
 
   nodeBag.list.push(listElt);
 
@@ -48,17 +47,17 @@ export function createTocCore(headings, resolveInputs, firstTime = true, nums = 
     const h = headings[i]; 
     if (!h.id) throw new Error(`Headings must have ids.`); 
 
-    h.classList.add(input.cH);
+    h.classList.add(ipCH);
 
     const getDepthNumSpan = className => {
       const span = elt("span", null, className);
       span.append(nums
-        .map(n => n.toLocaleString(input.numLocale || "en-US", {useGrouping: false}))
-        .join(input.numSep) + (input.numPostfix));
+        .map(n => n.toLocaleString(ipNumLocale || "en-US", {useGrouping: false}))
+        .join(ipNumSep) + (ipNumPostfix));
       return span;
     };
 
-    const li = elt("li", null, input.cLi);
+    const li = elt("li", null, ipCLi);
     nodeBag.li.push(li);
 
     const getAnchorHTML = (hID, className, innerHTML, textContent) => {
@@ -69,27 +68,27 @@ export function createTocCore(headings, resolveInputs, firstTime = true, nums = 
       return a;
     };
 
-    const tocAnchor = getAnchorHTML(h.id, input.cTocAnchor, h.innerHTML);
+    const tocAnchor = getAnchorHTML(h.id, ipCTocAnchor, h.innerHTML);
     li.append(tocAnchor);
     nodeBag.ta.push(tocAnchor);
 
-    if (input.bTocNum) { 
-      const tocNumSpan = getDepthNumSpan(input.cTocNum);
+    if (ipBTocNum) { 
+      const tocNumSpan = getDepthNumSpan(ipCTocNum);
       li.prepend(tocNumSpan);
       nodeBag.tn.push(tocNumSpan);
     }
 
-    const headingNumSpan = getDepthNumSpan(input.cHNum);
+    const headingNumSpan = getDepthNumSpan(ipCHNum);
 
-    if (input.bHNum) {
+    if (ipBHNum) {
       h.prepend(headingNumSpan);
       nodeBag.hn.push(headingNumSpan);
     }
 
-    if (input.bAnchor) {
-      const headingAnchor = getAnchorHTML(h.id, input.cHAnchor, 0, input.anchorSymbol);
+    if (ipBAnchor) {
+      const headingAnchor = getAnchorHTML(h.id, ipCHAnchor, 0, ipAnchorSymbol);
 
-      if (input.anchorDir == "l") h.prepend(headingAnchor);
+      if (ipAnchorDir == "l") h.prepend(headingAnchor);
       else h.append(headingAnchor);
 
       nodeBag.ha.push(headingAnchor);
@@ -104,7 +103,7 @@ export function createTocCore(headings, resolveInputs, firstTime = true, nums = 
     /* ------ Subheading generation end -------*/
 
     if (subHeadings.length > 0) {
-      li.append(createTocCore(subHeadings, resolveInputs, false, nums));
+      li.append(createTocCore(subHeadings, resolveInput, false, nums));
     } 
 
     listElt.append(li);
@@ -116,10 +115,10 @@ export function createTocCore(headings, resolveInputs, firstTime = true, nums = 
   nums.pop();
 
   if (firstTime) {
-    const toc = elt(input.wrapperElt || 'nav', input.tocId, input.cToc);
+    const toc = elt(ipWrapperElt || 'nav', ipTocId, ipCToc);
 
-    const title = elt("h2", null, input.cTitle); 
-    title.textContent = input.titleText;
+    const title = elt("h2", null, ipCTitle); 
+    title.textContent = ipTitleText;
     nodeBag.title = title;
     toc.append(title);
 

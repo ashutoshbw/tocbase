@@ -32,12 +32,9 @@ function createToc(g = {}) {
     pluginSliceIndex = 1;
   }
 
-  const resolveInputs = defaultValues => Object.entries(defaultValues).reduce((a, e) => {
-    a[e[0]] = resolveTocbaseInputInternal(bag, e[0], e[1])
-    return a;
-  }, {});
+  const resolveInput = (valueName, defaultValue) => resolveTocbaseInputInternal(bag, valueName, defaultValue);
 
-  if (!(bag.toc = createTocCore(bag.hArray, resolveInputs))) return;
+  if (!(bag.toc = createTocCore(bag.hArray, resolveInput))) return;
 
   placeholderElt?.replaceWith(bag.toc);
 
