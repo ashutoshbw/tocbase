@@ -39,12 +39,13 @@ export const resolveTocbaseInputInternal = (bag, valueName, defaultValue) => {
 // For resolving input in plugins
 const resolvePluginInputInternal = (bag, pluginName, config, valueName, defaultValue) => {
   const pc = bag.plugins[pluginName];
-  const value = bag.plugins[pluginName][valueName] || config[valueName] || defaultValue;
+  const value = hasKey(pc, valueName) ? pc[valueName] :
+                hasKey(config, valueName) ? config[valueName] : defaultValue;
   pc[valueName] = value;
   return value;
 }
 
-const processPlugin = plugin => ({
+const preProcessPlugin = plugin => ({
   setup(bag) {
     const {name, config} = plugin;
     if (bag.plugins.__applied.some(p => p.name === name)) throw new Error(`"${name}" Plugin is called multiple times.`);
@@ -53,13 +54,17 @@ const processPlugin = plugin => ({
 
     bag.plugins[name] = Object.assign({}, bag.plugins[name]);
 
-    plugin.setup(bag, resolveInput, config);
+    const ipEnable = resolveInput("enable", 1);
 
-    bag.plugins.__applied.push(plugin);
+    if (ipEnable) {
+      plugin.setup(bag, resolveInput, config);
+      bag.plugins.__applied.push(plugin);
+    }
+
     return bag;
   }
 });
 
-export const setupPlugins = (plugins, bag) => plugins.reduce((acc, p) => processPlugin(p).setup(acc), bag);
+export const setupPlugins = (plugins, bag) => plugins.reduce((acc, p) => preProcessPlugin(p).setup(acc), bag);
 
 export const createPlugin = (name, setup) => (config = {}) => ({ name, config, setup });

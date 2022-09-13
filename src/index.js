@@ -39,7 +39,7 @@ function createToc(g = {}) {
     .${bag.cNumList} {
       list-style-type: none;
     }
-    .${bag.cTocNum} {
+    .${bag.cTocNum}, .${bag.cHNum} {
       margin-right: 0.2rem;
     }
     .${bag.cHAnchor} {

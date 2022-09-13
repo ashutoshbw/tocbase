@@ -170,6 +170,8 @@ Default value: `undefined`
 
 If you don't specify this, `tocbase` will make the ToC if it got some headings with ids and then will return the resulted DOM node.
 
+It's possible to override this value from local config, however that doesn't do anything else than that.
+
 #### `omit`
 Type: "String"<br>
 Default value: `""`
@@ -336,7 +338,9 @@ Use it to specify class name(s) for the ToC `<li>` elements.
 
 ### Local Config
 
-You can override the properties of the `config` object of global config through local config.
+You can override most properties of the config object that you pass to `createToc` function, through local config in a HTML page.
+
+**Note**: `tocbase` passes all the interesting config values and also other values that it finds interesting to it's plugin through object that we call a `bag`. Like `hArray`, `toc` etc. We will see full list of them in "Plugin development section". It's not recommended to override them in local config. That might make plugins useless.
 
 To write the local config you will need to pass that as a JSON object as the content of the placeholder element. Below is an exmaple:
 
