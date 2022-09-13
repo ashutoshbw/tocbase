@@ -47,16 +47,18 @@ const resolvePluginInputInternal = (bag, pluginName, config, valueName, defaultV
 
 const preProcessPlugin = plugin => ({
   setup(bag) {
-    const {name, config} = plugin;
+    const {name, config, parentName} = plugin;
     if (bag.plugins.__applied.some(p => p.name === name)) throw new Error(`"${name}" Plugin is called multiple times.`);
 
     const resolveInput = (valueName, defaultValue) => resolvePluginInputInternal(bag, name, config, valueName, defaultValue);
 
     bag.plugins[name] = Object.assign({}, bag.plugins[name]);
 
-    const ipEnable = resolveInput("enable", 1);
+    const parentPlugin = Object.entries(bag.plugins).find(e => e[0] == parentName);
 
-    if (ipEnable) {
+    if (parentName && (parentPlugin ? !parentPlugin[1].enable : 1)) {
+      bag.plugins[name].enable = 0;
+    } else if (resolveInput("enable", 1)) {
       plugin.setup(bag, resolveInput, config);
       bag.plugins.__applied.push(plugin);
     }
@@ -67,4 +69,4 @@ const preProcessPlugin = plugin => ({
 
 export const setupPlugins = (plugins, bag) => plugins.reduce((acc, p) => preProcessPlugin(p).setup(acc), bag);
 
-export const createPlugin = (name, setup) => (config = {}) => ({ name, config, setup });
+export const createPlugin = (name, setup, parentName = null) => (config = {}) => ({ name, config, setup, parentName });

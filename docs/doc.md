@@ -361,20 +361,29 @@ Two things to keep in mind:
 - Because you are writing JSON as HTML string, if you want to include some HTML reserved characters like `<` or `&` you will need use HTML entities for those.
 
 ## Plugin development Guide
-When developing a pluging you should document where this plugin should come in the `plugins` array. That is
+When developing a pluging you should document where this plugin can come in the `plugins` array. That is
 - What this plugin expects from the DOM and the internal `bag` variable.
 
-Coming Soon!
+- If a plugin is dependable on some other plugin, we call them child and parent plugin respectively. A child plugin should not come before parent plugin the `plugins` array. After the parent plugin it can come at any place if the DOM and and bag that it gets satisfies it's requirement.
 
+- A plugin can all other plugins internally.
+
+Some rules for plugins:
 - A plugin is not allowed to be applied multiple times.
-- Each plugin in an app should have unique names. In rare cases if you have came accross two different plugins with same name, you have to manually rename it first to use it.
+- Each plugin in an app should have unique names. In by accidentally two plugins have the same name, you can still use it. But you have to manually rename it first to use it.
 
-Plugin falls into two categories:
-- Pre Plugin: like `auto-id`: You can use them to do some modification to dom to make it ready for tobase to use it.
-- Post Plugins: like `foldable`: A plugin with a specific feature.
+All plugins are applied after the generation of the toc except a plugin named `auto-id`. It is used to automatically generate unique ids for grabbed headings. There is a core plugin at npm called `tocbase-plugin-auto-id`(it's the package name not plugin name). This plugin must be called as the first element of the `plugins` array. You can also write a plugin named `auto-id` and use it instead of the core plugin if that doesn't meet your needs.
 
 Note if there are two plugins for the same purpose and you use them both, the result will most likely be a mess.
 
+### Deleloping sub plugin
+You must automatically disable a subplugin if it's parent or great parent(so on) is disabled.
+
+```
+createPlugin("awesomePlug", (bag, getInput) => {
+  
+}, "My parent plugin name");
+```
 
 ## Changes made
 - `glocalOmit`
