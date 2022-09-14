@@ -45,44 +45,31 @@ export function getHeadings(getFrom = "body", globalOmit = "", omit = "") {
   return headings.filter(h => h.matches(`:not(${e1}${e1 && e2 ? ',' : ''}${e2})`));
 }
 
-// For resolving input in tocbase core
-export const resolveTocbaseInputInternal = (bag, valueName, defaultValue) => {
-  bag[valueName] = bag[valueName] === null ? null :
-                   hasKey(bag, valueName) ? bag[valueName] : defaultValue;
-  return bag[valueName];
-}
+export const usePlugin = (plugin, bag) => {
+  const {name, config, parentName} = plugin;
+  if (bag.plugins.__applied.some(p => p.name === name)) throw new Error(`"${name}" Plugin is called multiple times.`);
 
-// For resolving input in plugins
-const resolvePluginInputInternal = (bag, pluginName, config, valueName, defaultValue) => {
-  const pc = bag.plugins[pluginName];
-  const value = hasKey(pc, valueName) ? pc[valueName] :
-                hasKey(config, valueName) ? config[valueName] : defaultValue;
-  pc[valueName] = value;
-  return value;
-}
+  const resolveInput = (valueName, defaultValue) => {
+    const pc = bag.plugins[name];
+    pc[valueName] = hasKey(pc, valueName) ? pc[valueName] :
+                  hasKey(config, valueName) ? config[valueName] : defaultValue;
+    return pc[valueName];
+  };
 
-const preProcessPlugin = plugin => ({
-  setup(bag) {
-    const {name, config, parentName} = plugin;
-    if (bag.plugins.__applied.some(p => p.name === name)) throw new Error(`"${name}" Plugin is called multiple times.`);
+  bag.plugins[name] = Object.assign({}, bag.plugins[name]);
 
-    const resolveInput = (valueName, defaultValue) => resolvePluginInputInternal(bag, name, config, valueName, defaultValue);
+  const parentPlugin = Object.entries(bag.plugins).find(e => e[0] == parentName);
 
-    bag.plugins[name] = Object.assign({}, bag.plugins[name]);
-
-    const parentPlugin = Object.entries(bag.plugins).find(e => e[0] == parentName);
-
-    if (parentName && (parentPlugin ? !parentPlugin[1].enable : 1)) {
-      bag.plugins[name].enable = 0;
-    } else if (resolveInput("enable", 1)) {
-      plugin.setup(bag, resolveInput, config);
-      bag.plugins.__applied.push(plugin);
-    }
-
-    return bag;
+  if (parentName && (parentPlugin ? !parentPlugin[1].enable : 1)) {
+    bag.plugins[name].enable = 0;
+  } else if (resolveInput("enable", 1)) {
+    plugin.setup(bag, resolveInput, config);
+    bag.plugins.__applied.push(plugin);
   }
-});
 
-export const setupPlugins = (plugins, bag) => plugins.reduce((acc, p) => preProcessPlugin(p).setup(acc), bag);
+  return bag;
+};
+
+export const setupPlugins = (plugins, bag) => plugins.reduce((acc, p) => usePlugin(p, acc), bag);
 
 export const createPlugin = (name, setup, parentName = null) => (config = {}) => ({ name, config, setup, parentName });

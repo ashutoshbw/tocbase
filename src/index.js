@@ -1,4 +1,4 @@
-import { TB, $, $$, hasKey, elt, deepMerge, getHeadings, createPlugin, setupPlugins, resolveTocbaseInputInternal } from './util.js';
+import { TB, $, $$, hasKey, elt, deepMerge, getHeadings, createPlugin, setupPlugins, usePlugin } from './util.js';
 import { createTocCore, nodeBag } from './core.js';
 
 function createToc(g = {}) {
@@ -11,7 +11,10 @@ function createToc(g = {}) {
     plugins: {__applied: []},
   };
 
-  const resolveInput = (valueName, defaultValue) => resolveTocbaseInputInternal(bag, valueName, defaultValue);
+  const resolveInput = (valueName, defaultValue) => {
+    bag[valueName] = hasKey(bag, valueName) ? bag[valueName] : defaultValue;
+    return bag[valueName];
+  };
 
   // Add a style tag for tocbase and it's plugins
   bag.style = elt('style');
@@ -31,7 +34,7 @@ function createToc(g = {}) {
 
   let pluginSliceIndex = 0;
   if (plugins && plugins[0]?.name == "auto-id") {
-    plugins[0].setup({...bag});
+    usePlugin(plugins[0], bag)
     pluginSliceIndex = 1;
   }
 
