@@ -3,6 +3,8 @@ title: Tocbase documentation
 date: August 31, 2022
 ---
 
+THIS DOC IS OBSOLETE, IT WILL CHANGE SOON!
+
 # Tocbase
 <a href="https://bundlephobia.com/package/tocbase" target="_blank"><img src="https://img.shields.io/bundlephobia/minzip/tocbase?color=green" alt="Minimized and gzipped size"></a>
 
