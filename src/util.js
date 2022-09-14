@@ -63,7 +63,7 @@ export const usePlugin = (plugin, bag) => {
   if (parentName && (parentPlugin ? !parentPlugin[1].enable : 1)) {
     bag.plugins[name].enable = 0;
   } else if (resolveInput("enable", 1)) {
-    plugin.setup(bag, resolveInput, config);
+    plugin.setup(bag, resolveInput, name, config);
     bag.plugins.__applied.push(plugin);
   }
 

@@ -6,7 +6,7 @@ function createToc(g = {}) {
     setupPlugins(plugins) {
       setupPlugins(plugins, this)
     },
-    $, $$, elt, hasKey,
+    $, $$, elt, hasKey, TB,
     ...nodeBag,
     plugins: {__applied: []},
   };
