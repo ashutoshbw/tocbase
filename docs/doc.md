@@ -365,6 +365,21 @@ Two things to keep in mind:
 - Because you are writing JSON as HTML string, if you want to include some HTML reserved characters like `<` or `&` you will need use HTML entities for those.
 
 ## Plugin development Guide
+You can use `createPlugin` function from `tocbase` if you want to create it without writing any boilerplate code. But if you really need to save a few more bytes in the bundle size, you will need to use the following boilerplate code to create plugins:
+
+```js
+const myPlugin = (config = {}) => ({
+  name: "my-plugin",
+  config,
+  setup(bag, resolveInput, name, config) {
+
+  },
+  parentName: "the name of it's parent plugin"  // or null in case there is no parent
+})
+```
+
+---
+
 When developing a pluging you should document where this plugin can come in the `plugins` array. That is
 - What this plugin expects from the DOM and the internal `bag` variable.
 
