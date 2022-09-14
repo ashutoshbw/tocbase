@@ -52,7 +52,7 @@ export const usePlugin = (plugin, bag) => {
   const resolveInput = (valueName, defaultValue) => {
     const pc = bag.plugins[name];
     pc[valueName] = hasKey(pc, valueName) ? pc[valueName] :
-                  hasKey(config, valueName) ? config[valueName] : defaultValue;
+                    hasKey(config, valueName) ? config[valueName] : defaultValue;
     return pc[valueName];
   };
 
