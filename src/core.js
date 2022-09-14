@@ -33,8 +33,12 @@ export function createTocCore(headings, resolveInput, firstTime = true, nums = [
   const ipCTocAnchor = resolveInput("cTocAnchor", `${TB}-toc-a`);
   const ipCHAnchor   = resolveInput("cHAnchor",   `${TB}-h-a`);
 
-  const listElt = elt(ipListType, null, firstTime ? ipCRootList : 
-                                        ipBTocNum ? ipCNumList: ipCList);
+  let classesForListElt = '';
+  const c1 = firstTime ? ipCRootList : null;
+  const c2 = ipBTocNum ? ipCNumList: ipCList;
+  if (c1 !== null) classesForListElt += c1 + ' ';
+  if (c2 !== null) classesForListElt += c2;
+  const listElt = elt(ipListType, null, classesForListElt);
 
   nodeBag.list.push(listElt);
 
