@@ -4,9 +4,24 @@ export const $ = (s, n) => (n || document).querySelector(s);
 export const $$ = (s, n) => [...(n || document).querySelectorAll(s)];
 export const hasKey = (o, k) => o.hasOwnProperty(k);
 
-export function elt(type, id, className) {
+export const addClassesToClassList = (elt, classes) => {
+  if (typeof classes != "string") return;
+  classes = classes.trim();
+
+  // following is a trick to have [] when `classes` is empty string 
+  // it's safe because a string can't have more classes than it's length
+  const cArr = classes.split(/\s+/, classes.length);
+  cArr.forEach(c => elt.classList.add(c));
+};
+
+export function elt(type, id, classes) {
   const node = document.createElement(type);
-  return id ? node.id = id : className && (node.className = className), node;
+  if (typeof id == "string") {
+    id = id.trim();
+    if (id) node.id = id;
+  }
+  addClassesToClassList(node, classes);
+  return node;
 }
 
 const isObj = o => !Array.isArray(o) && typeof o == 'object';
@@ -32,7 +47,8 @@ export function getHeadings(getFrom = "body", globalOmit = "", omit = "") {
 
 // For resolving input in tocbase core
 export const resolveTocbaseInputInternal = (bag, valueName, defaultValue) => {
-  bag[valueName] = bag[valueName] || defaultValue;
+  bag[valueName] = bag[valueName] === null ? null :
+                   hasKey(bag, valueName) ? bag[valueName] : defaultValue;
   return bag[valueName];
 }
 

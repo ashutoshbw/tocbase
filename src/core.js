@@ -1,4 +1,4 @@
-import { TB, elt, hasKey } from './util.js';
+import { TB, elt, hasKey, addClassesToClassList } from './util.js';
 
 export const nodeBag = {list:[], li:[], ta: [], ha: [], tn: [], hn: []};
 
@@ -33,9 +33,8 @@ export function createTocCore(headings, resolveInput, firstTime = true, nums = [
   const ipCTocAnchor = resolveInput("cTocAnchor", `${TB}-toc-a`);
   const ipCHAnchor   = resolveInput("cHAnchor",   `${TB}-h-a`);
 
-  const listElt = elt(ipListType, null, firstTime && ipCRootList);
-
-  listElt.classList.add(ipBTocNum ? ipCNumList: ipCList);
+  const listElt = elt(ipListType, null, firstTime ? ipCRootList : 
+                                        ipBTocNum ? ipCNumList: ipCList);
 
   nodeBag.list.push(listElt);
 
@@ -45,7 +44,7 @@ export function createTocCore(headings, resolveInput, firstTime = true, nums = [
     const h = headings[i]; 
     if (!h.id) throw new Error(`Headings must have ids.`); 
 
-    h.classList.add(ipCH);
+    addClassesToClassList(h, ipCH);
 
     const getDepthNumSpan = className => {
       const span = elt("span", null, className);

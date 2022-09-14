@@ -30,6 +30,8 @@ All the styling is done through JS.
 
 In a HTML page the the tocbase stylesheet comes before any other stylesheets. This allows one to customize the class from other stylesheets if one wants.
 
+For setting classnames through config, if you don't specify one, it will always use a default classname starting with the `tocbase` keyword. If you don't want to assign a classname you have to explicitly pass `null` or `""`(empty string).
+
 ## Installing
 
 ### CDN
@@ -200,9 +202,9 @@ The element to use for the ToC listing. You can specify `"ol"` for having `<ol>`
 
 ##### `tocId`
 Type: String<br>
-Default: `undefiend`
+Default: `"tocbase-toc"`
 
-A string representing the id of the wrapper element.
+A string representing the id of the wrapper element. Use `""` or `null` to do not assign any id.
 
 ##### `titleHTML`
 Type: String<br>
