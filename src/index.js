@@ -3,7 +3,9 @@ import { createTocCore, nodeBag } from './core.js';
 
 function createToc(g = {}) {
   const bag = {
-    setupPlugins,
+    setupPlugins(plugins) {
+      setupPlugins(plugins, this)
+    },
     $, $$, elt, hasKey,
     ...nodeBag,
     plugins: {__applied: []},
