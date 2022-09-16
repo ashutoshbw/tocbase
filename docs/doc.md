@@ -395,6 +395,11 @@ All plugins are applied after the generation of the toc except a plugin named `a
 
 Note if there are two plugins for the same purpose and you use them both, the result will most likely be a mess.
 
+### `__data` propety of plugin
+Inside `bag.plugins.<plugin-name>` there is a `__data` property containing an object.
+
+It's purpose is to hold any values necessary for the plugin do it's job except the resolved input values(which are recorded outside it).
+
 ### Deleloping sub plugin
 You must automatically disable a subplugin if it's parent or great parent(so on) is disabled.
 

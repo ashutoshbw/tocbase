@@ -57,13 +57,15 @@ export const usePlugin = (plugin, bag) => {
   };
 
   bag.plugins[name] = Object.assign({}, bag.plugins[name]);
+  bag.plugins[name].__data = {};
 
   const parentPlugin = Object.entries(bag.plugins).find(e => e[0] == parentName);
 
   if (parentName && (parentPlugin ? !parentPlugin[1].enable : 1)) {
     bag.plugins[name].enable = 0;
   } else if (resolveInput("enable", 1)) {
-    plugin.setup(bag, resolveInput, name, config);
+    const destroyPlugin = plugin.setup(bag, resolveInput, name, config);
+    plugin.destroy = destroyPlugin;
     bag.plugins.__applied.push(plugin);
   }
 
@@ -73,3 +75,18 @@ export const usePlugin = (plugin, bag) => {
 export const setupPlugins = (plugins, bag) => plugins.reduce((acc, p) => usePlugin(p, acc), bag);
 
 export const createPlugin = (name, setup, parentName = null) => (config = {}) => ({ name, config, setup, parentName });
+
+export const destroy = bag => {
+  bag.style.remove();
+
+  if (bag.placeholderElt)
+    bag.toc.replaceWith(bag.placeholderElt);
+
+  bag.ha.forEach(a => a.remove());
+  bag.hn.forEach(n => n.remove());
+  bag.hArray.forEach((h, i) => bag.__bHArrayClass[i] ? h.classList.remove(bag.cH) : h.removeAttribute("class"))
+
+  bag.plugins.__applied.forEach(p => {
+    if (p.destroy) p.destroy();
+  })
+}

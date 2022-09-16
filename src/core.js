@@ -1,6 +1,6 @@
 import { TB, elt, hasKey, addClassesToClassList } from './util.js';
 
-export const nodeBag = {list:[], li:[], ta: [], ha: [], tn: [], hn: []};
+export const nodeBag = {list:[], li:[], ta: [], ha: [], tn: [], hn: [], __bHArrayClass: []};
 
 export function createTocCore(headings, resolveInput, firstTime = true, nums = []) {
   // just a optimized way to check if the array is empty
@@ -48,6 +48,7 @@ export function createTocCore(headings, resolveInput, firstTime = true, nums = [
     const h = headings[i]; 
     if (!h.id) throw new Error(`Headings must have ids.`); 
 
+    nodeBag.__bHArrayClass.push(h.hasAttribute("class"));
     addClassesToClassList(h, ipCH);
 
     const getDepthNumSpan = className => {

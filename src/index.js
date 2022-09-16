@@ -1,4 +1,4 @@
-import { TB, $, $$, hasKey, elt, deepMerge, getHeadings, createPlugin, setupPlugins, usePlugin } from './util.js';
+import { TB, $, $$, hasKey, elt, deepMerge, getHeadings, createPlugin, setupPlugins, usePlugin, destroy } from './util.js';
 import { createTocCore, nodeBag } from './core.js';
 
 function createToc(g = {}) {
@@ -22,6 +22,7 @@ function createToc(g = {}) {
   document.head.prepend(bag.style);
 
   const placeholderElt = document.getElementById(g.placeholderId);
+  bag.placeholderElt = placeholderElt;
 
   const plugins = g.plugins;
   delete g.plugins;
@@ -30,7 +31,7 @@ function createToc(g = {}) {
   // pass to plugins to do awesome things
   deepMerge(bag, g, JSON.parse(placeholderElt?.textContent.trim() || "{}"));
 
-  bag.hArray = getHeadings(g.getFrom, bag.glocalOmit, bag.omit);
+  bag.hArray = getHeadings(bag.getFrom, bag.glocalOmit, bag.omit);
 
   let pluginSliceIndex = 0;
   if (plugins && plugins[0]?.name == "auto-id") {
@@ -54,7 +55,12 @@ function createToc(g = {}) {
 
   placeholderElt?.replaceWith(bag.toc);
 
-  return setupPlugins((plugins || []).slice(pluginSliceIndex), bag).toc;
+  setupPlugins((plugins || []).slice(pluginSliceIndex), bag);
+
+  return {
+    element: bag.toc,
+    destroy: () => destroy(bag)
+  }
 }
 
 export { createToc, createPlugin };
