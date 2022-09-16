@@ -400,12 +400,16 @@ Inside `bag.plugins.<plugin-name>` there is a `__data` property containing an ob
 
 It's purpose is to hold any values necessary for the plugin do it's job except the resolved input values(which are recorded outside it).
 
-### Naming your plugins
+### Naming your plugins and properties
 All plugins used by `tocbase` must have unique names.
 
 It's recommended to use camel case for nameing plugins and using the way same for nameing variables in JavaScript.
 
 If two plugin names collide, you will need to manually rename it first before using it.
+
+While naming a property containing an array, the recommenedation is:
+- If the name becomes long use abbreviation.
+- If the name is short, use plural form, if that helps understandanding what's inside.
 
 ### Deleloping sub plugin
 You must automatically disable a subplugin if it's parent or great parent(so on) is disabled.

@@ -1,6 +1,6 @@
 import { TB, elt, hasKey, addClassesToClassList } from './util.js';
 
-export const nodeBag = {list:[], li:[], ta: [], ha: [], tn: [], hn: [], __bHClassAttribute: []};
+export const nodeBag = {lists:[], li:[], ta: [], ha: [], tn: [], hn: [], __bHClassAttribute: []};
 
 export function createTocCore(headings, resolveInput, firstTime = true, nums = []) {
   // just a optimized way to check if the array is empty
@@ -40,7 +40,7 @@ export function createTocCore(headings, resolveInput, firstTime = true, nums = [
   if (c2 !== null) classesForListElt += c2;
   const listElt = elt(ipListType, null, classesForListElt);
 
-  nodeBag.list.push(listElt);
+  nodeBag.lists.push(listElt);
 
   nums.push(1);
 
