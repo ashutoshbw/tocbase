@@ -84,7 +84,7 @@ export const destroy = bag => {
 
   bag.ha.forEach(a => a.remove());
   bag.hn.forEach(n => n.remove());
-  bag.hArray.forEach((h, i) => bag.__bHArrayClass[i] ? h.classList.remove(bag.cH) : h.removeAttribute("class"))
+  bag.h.forEach((h, i) => bag.__bHClassAttribute[i] ? h.classList.remove(bag.cH) : h.removeAttribute("class"))
 
   bag.plugins.__applied.forEach(p => {
     if (p.destroy) p.destroy();

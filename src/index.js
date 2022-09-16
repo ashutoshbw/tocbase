@@ -31,7 +31,7 @@ function createToc(g = {}) {
   // pass to plugins to do awesome things
   deepMerge(bag, g, JSON.parse(placeholderElt?.textContent.trim() || "{}"));
 
-  bag.hArray = getHeadings(bag.getFrom, bag.glocalOmit, bag.omit);
+  bag.h = getHeadings(bag.getFrom, bag.glocalOmit, bag.omit);
 
   let pluginSliceIndex = 0;
   if (plugins && plugins[0]?.name == "auto-id") {
@@ -39,7 +39,7 @@ function createToc(g = {}) {
     pluginSliceIndex = 1;
   }
 
-  if (!(bag.toc = createTocCore(bag.hArray, resolveInput))) return;
+  if (!(bag.toc = createTocCore(bag.h, resolveInput))) return;
 
   bag.addCSS(`
     .${bag.cNumList} {

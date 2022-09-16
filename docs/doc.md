@@ -344,7 +344,7 @@ Use it to specify class name(s) for the ToC `<li>` elements.
 
 You can override most properties of the config object that you pass to `createToc` function, through local config in a HTML page.
 
-**Note**: `tocbase` passes all the interesting config values and also other values that it finds interesting to it's plugin through object that we call a `bag`. Like `hArray`, `toc` etc. We will see full list of them in "Plugin development section". It's not recommended to override them in local config. That might make plugins useless.
+**Note**: `tocbase` passes all the interesting config values and also other values that it finds interesting to it's plugin through object that we call a `bag`. Like `h`, `toc` etc. We will see full list of them in "Plugin development section". It's not recommended to override them in local config. That might make plugins useless.
 
 To write the local config you will need to pass that as a JSON object as the content of the placeholder element. Below is an exmaple:
 
@@ -399,6 +399,13 @@ Note if there are two plugins for the same purpose and you use them both, the re
 Inside `bag.plugins.<plugin-name>` there is a `__data` property containing an object.
 
 It's purpose is to hold any values necessary for the plugin do it's job except the resolved input values(which are recorded outside it).
+
+### Naming your plugins
+All plugins used by `tocbase` must have unique names.
+
+It's recommended to use camel case for nameing plugins and using the way same for nameing variables in JavaScript.
+
+If two plugin names collide, you will need to manually rename it first before using it.
 
 ### Deleloping sub plugin
 You must automatically disable a subplugin if it's parent or great parent(so on) is disabled.
