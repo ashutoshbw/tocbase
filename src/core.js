@@ -1,8 +1,6 @@
 import { TB, elt, hasKey, addClassesToClassList } from './util.js';
 
-export const nodeBag = {lists:[], li:[], ta: [], ha: [], tn: [], hn: [], __bHClassAttribute: []};
-
-export function createTocCore(headings, resolveInput, firstTime = true, nums = []) {
+export function createTocCore(bag, headings, resolveInput, firstTime = true, nums = []) {
   // just a optimized way to check if the array is empty
   if (!headings[0]) return;
 
@@ -40,7 +38,7 @@ export function createTocCore(headings, resolveInput, firstTime = true, nums = [
   if (c2 !== null) classesForListElt += c2;
   const listElt = elt(ipListType, null, classesForListElt);
 
-  nodeBag.lists.push(listElt);
+  bag.lists.push(listElt);
 
   nums.push(1);
 
@@ -48,7 +46,7 @@ export function createTocCore(headings, resolveInput, firstTime = true, nums = [
     const h = headings[i]; 
     if (!h.id) throw new Error(`Headings must have ids.`); 
 
-    nodeBag.__bHClassAttribute.push(h.hasAttribute("class"));
+    bag.__bHClassAttribute.push(h.hasAttribute("class"));
     addClassesToClassList(h, ipCH);
 
     const getDepthNumSpan = className => {
@@ -60,7 +58,7 @@ export function createTocCore(headings, resolveInput, firstTime = true, nums = [
     };
 
     const li = elt("li", null, ipCLi);
-    nodeBag.li.push(li);
+    bag.li.push(li);
 
     const getAnchorHTML = (hID, className, innerHTML, textContent) => {
       let a = elt("a", null, className);
@@ -72,19 +70,19 @@ export function createTocCore(headings, resolveInput, firstTime = true, nums = [
 
     const tocAnchor = getAnchorHTML(h.id, ipCTocAnchor, h.innerHTML);
     li.append(tocAnchor);
-    nodeBag.ta.push(tocAnchor);
+    bag.ta.push(tocAnchor);
 
     if (ipBTocNum) { 
       const tocNumSpan = getDepthNumSpan(ipCTocNum);
       li.prepend(tocNumSpan);
-      nodeBag.tn.push(tocNumSpan);
+      bag.tn.push(tocNumSpan);
     }
 
     const headingNumSpan = getDepthNumSpan(ipCHNum);
 
     if (ipBHNum) {
       h.prepend(headingNumSpan);
-      nodeBag.hn.push(headingNumSpan);
+      bag.hn.push(headingNumSpan);
     }
 
     if (ipBAnchor) {
@@ -93,7 +91,7 @@ export function createTocCore(headings, resolveInput, firstTime = true, nums = [
       if (ipAnchorDir == "l") h.prepend(headingAnchor);
       else h.append(headingAnchor);
 
-      nodeBag.ha.push(headingAnchor);
+      bag.ha.push(headingAnchor);
     }
 
     /* ------ Subheading generation start -------*/
@@ -105,7 +103,7 @@ export function createTocCore(headings, resolveInput, firstTime = true, nums = [
     /* ------ Subheading generation end -------*/
 
     if (subHeadings.length > 0) {
-      li.append(createTocCore(subHeadings, resolveInput, false, nums));
+      li.append(createTocCore(bag, subHeadings, resolveInput, false, nums));
     } 
 
     listElt.append(li);
@@ -121,7 +119,7 @@ export function createTocCore(headings, resolveInput, firstTime = true, nums = [
 
     const title = elt("h2", null, ipCTitle); 
     title.textContent = ipTitleText;
-    nodeBag.title = title;
+    bag.title = title;
     toc.append(title);
 
     toc.append(listElt);

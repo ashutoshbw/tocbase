@@ -1,14 +1,14 @@
 import { TB, $, $$, hasKey, elt, deepMerge, getHeadings, createPlugin, setupPlugins, usePlugin, destroy } from './util.js';
-import { createTocCore, nodeBag } from './core.js';
+import { createTocCore } from './core.js';
 
 function createToc(g = {}) {
   const bag = {
+    lists:[], li:[], ta: [], ha: [], tn: [], hn: [], __bHClassAttribute: [],
+    $, $$, elt, hasKey, TB,
+    plugins: {__applied: []},
     setupPlugins(plugins) {
       setupPlugins(plugins, this)
     },
-    $, $$, elt, hasKey, TB,
-    ...nodeBag,
-    plugins: {__applied: []},
   };
 
   const resolveInput = (valueName, defaultValue) => {
@@ -39,7 +39,7 @@ function createToc(g = {}) {
     pluginSliceIndex = 1;
   }
 
-  if (!(bag.toc = createTocCore(bag.h, resolveInput))) return;
+  if (!(bag.toc = createTocCore(bag, bag.h, resolveInput))) return;
 
   bag.addCSS(`
     .${bag.cNumList} {
