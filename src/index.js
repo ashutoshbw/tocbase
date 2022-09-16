@@ -34,7 +34,7 @@ function createToc(g = {}) {
   bag.h = getHeadings(bag.getFrom, bag.glocalOmit, bag.omit);
 
   let pluginSliceIndex = 0;
-  if (plugins && plugins[0]?.name == "auto-id") {
+  if (plugins && plugins[0]?.name == "autoId") {
     usePlugin(plugins[0], bag)
     pluginSliceIndex = 1;
   }
