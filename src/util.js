@@ -1,7 +1,7 @@
 export const TB = "tocbase";
 
-export const $ = (s, n) => (n || document).querySelector(s);
-export const $$ = (s, n) => [...(n || document).querySelectorAll(s)];
+export const $ = (s, n) => n.querySelector(s);
+export const $$ = (s, n) => [...n.querySelectorAll(s)];
 export const hasKey = (o, k) => o.hasOwnProperty(k);
 
 export const addClassesToClassList = (elt, classes) => {
@@ -35,10 +35,13 @@ export function deepMerge(t, ...sources) {
   return t;
 }
 
-export function getHeadings(getFrom = "body", globalOmit = "", omit = "") {
-  const headings = $$("h1,h2,h3,h4,h5,h6", $(getFrom)),
-        e1 = globalOmit.trim(), 
-        e2 = omit.trim();
+export function getHeadings(getFrom, globalOmit, omit) {
+  const getFromElement = $(getFrom, document);
+  if (!getFromElement) throw new Error(`Nothing found at selector "${getFrom}."`);
+  const headings = $$("h1,h2,h3,h4,h5,h6", getFromElement);
+  if (!headings.length) throw new Error(`No headings found to make toc.`);
+  const e1 = globalOmit.trim();
+  const e2 = omit.trim();
 
   if (!e1 && !e2) return headings;
 

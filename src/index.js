@@ -31,7 +31,16 @@ function createToc(g = {}) {
   // pass to plugins to do awesome things
   deepMerge(bag, g, JSON.parse(placeholderElt?.textContent.trim() || "{}"));
 
-  bag.h = getHeadings(bag.getFrom, bag.glocalOmit, bag.omit);
+  const ipGetFrom = resolveInput("getFrom", "body");
+  const ipGlocalOmit = resolveInput("glocalOmit", "");
+  const ipOmit = resolveInput("omit", "");
+
+  try {
+    bag.h = getHeadings(ipGetFrom, ipGlocalOmit, ipOmit);
+  } catch(e) {
+    console.log(`%cTocbase warning: ${e.message}`, "color: yellow; font-weight: bold");
+    return;
+  }
 
   let pluginSliceIndex = 0;
   if (plugins && plugins[0]?.name == "autoId") {
